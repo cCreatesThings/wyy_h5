@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -28,6 +29,18 @@ const router = createRouter({
       component: () => import('@/views/Dynamic/index.vue')
     }
   ]
+})
+
+// 路由前置守卫
+router.beforeEach((to) => {
+  const userStore = useUserStore()
+  // console.log(to, from)
+  if (to.path === '/login') {
+    userStore.showTabbar = false
+    return true
+  } else {
+    return true
+  }
 })
 
 export default router
