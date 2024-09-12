@@ -1,3 +1,8 @@
 :root {
-    --icon-font-size: 4vh;
+    --icon-font-size: 6vw;
+}
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
