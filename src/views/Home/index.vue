@@ -13,11 +13,11 @@ getPersonalized()
 <template>
   <div class="home">
     <div class="navbar flex mt-[10px]">
-      <Icon icon="ic:round-menu" class="icon" />
+      <div><Icon icon="ic:round-menu" class="icon" /></div>
       <div
-        class="search flex items-center flex-1 bg-[#eaedf2] rounded-[50px] ml-[20px] mr-[20px]"
+        class="search flex items-center flex-1 bg-[#eaedf2] rounded-[50px] ml-[10px] mr-[10px]"
       >
-        <Icon icon="bitcoin-icons:search-filled" class="icon ml-[5px]" />
+        <Icon icon="bitcoin-icons:search-filled" class="ml-[5px]" />
         <div class="searchKeyWord ml-[10px]">
           <van-swipe :show-indicators="false" :autoplay="3000" loop vertical>
             <van-swipe-item
@@ -36,6 +36,7 @@ getPersonalized()
 <style scoped>
 .icon {
   font-size: 30px;
+  color: gray;
 }
 .searchKeyWord {
   height: 5vw;
