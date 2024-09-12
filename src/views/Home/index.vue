@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { getPersonalizedAPI } from '@/api/personalized'
+import RecommendItem from './components/RecommendItem.vue'
 // 获取推荐歌单 , 渲染搜索框
 const personalizedList = ref([])
 const getPersonalized = async () => {
@@ -8,6 +9,25 @@ const getPersonalized = async () => {
   personalizedList.value = res.result
 }
 getPersonalized()
+
+// 时间提示文字
+const timeText = {
+  0: '早上好',
+  1: '上午好',
+  2: '下午好',
+  3: '晚上好'
+}
+const curTime = ref(new Date().getHours())
+const timeTextKey = ref(0)
+if (curTime.value >= 0 && curTime.value < 6) {
+  timeTextKey.value = 0
+} else if (curTime.value >= 6 && curTime.value < 12) {
+  timeTextKey.value = 1
+} else if (curTime.value >= 12 && curTime.value < 18) {
+  timeTextKey.value = 2
+} else if (curTime.value >= 18 && curTime.value < 24) {
+  timeTextKey.value = 3
+}
 </script>
 
 <template>
@@ -30,13 +50,17 @@ getPersonalized()
         </div>
       </div>
     </div>
+    <div class="w-[100%] h-[50px] time">{{ timeText[timeTextKey] }}</div>
+    <div class="recomendList w-[100%] overflow-auto flex">
+      <RecommendItem v-for="cur in 8" :key="cur" />
+    </div>
   </div>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .icon {
   font-size: 30px;
-  color: gray;
+  color: rgb(35, 35, 35);
 }
 .searchKeyWord {
   height: 5vw;
@@ -54,5 +78,9 @@ getPersonalized()
   display: --webkit;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+.time {
+  font-size: 25px;
+  line-height: 50px;
 }
 </style>
