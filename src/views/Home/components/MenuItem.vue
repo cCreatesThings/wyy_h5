@@ -7,7 +7,7 @@ defineProps({
 const curDate = ref(new Date().getDate())
 </script>
 <template>
-  <div class="menu flex w-[100%] overflow-auto">
+  <div class="menu flex w-[100%] mt-[3vw] overflow-auto">
     <div
       class="menu-item relative w-[12vw] flex-shrink mr-[5vw] flex justify-center flex-col items-center"
       v-for="item in menuList"

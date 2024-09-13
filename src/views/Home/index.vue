@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { getPersonalizedAPI } from '@/api/personalized'
-// import RecommendItem from './components/RecommendItem.vue'
+import RecommendItem from './components/RecommendItem.vue'
 import SwiperItem from './components/SwiperItem.vue'
 import { getHomeDataAPI } from '@/api/home'
 import MenuItem from './components/MenuItem.vue'
@@ -53,11 +53,18 @@ const getHomeData = async () => {
   })
 }
 getHomeData()
+
+const loading = ref(true)
+const onRefresh = () => {
+  setTimeout(() => {
+    loading.value = false
+  }, 1000)
+}
 </script>
 
 <template>
   <div class="home">
-    <div class="navbar flex mt-[10px]">
+    <div class="navbar sticky top-0 bg-white flex z-50 mt-[5px]">
       <div><Icon icon="ic:round-menu" class="icon" /></div>
       <div
         class="search flex items-center flex-1 bg-[#eaedf2] rounded-[50px] ml-[10px] mr-[10px]"
@@ -78,12 +85,18 @@ getHomeData()
         </div>
       </div>
     </div>
-    <div class="w-[100%] h-[50px] time">{{ timeText[timeTextKey] }}</div>
-    <SwiperItem :bannerList="bannerList" />
-    <MenuItem :menuList="menuList" />
-    <!-- <div class="recomendList w-[100%] overflow-auto flex">
-      <RecommendItem v-for="cur in 8" :key="cur" />
-    </div> -->
+    <van-pull-refresh
+      style="padding-bottom: 10vw"
+      v-model="loading"
+      @refresh="onRefresh"
+    >
+      <div class="w-[100%] h-[50px] time">{{ timeText[timeTextKey] }}</div>
+      <SwiperItem :bannerList="bannerList" />
+      <MenuItem :menuList="menuList" />
+      <div class="recomendList w-[100%] mt-[5vw] h-[51vw] overflow-auto flex">
+        <RecommendItem v-for="cur in 8" :key="cur" />
+      </div>
+    </van-pull-refresh>
   </div>
 </template>
 
