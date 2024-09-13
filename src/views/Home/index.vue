@@ -73,7 +73,7 @@ const onRefresh = () => {
       </div>
     </div>
     <van-pull-refresh
-      style="padding-bottom: 10vw"
+      style="padding-bottom: 15vw"
       v-model="loading"
       @refresh="onRefresh"
     >
