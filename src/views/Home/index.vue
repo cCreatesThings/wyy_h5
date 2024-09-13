@@ -4,6 +4,7 @@ import { getPersonalizedAPI } from '@/api/personalized'
 // import RecommendItem from './components/RecommendItem.vue'
 import SwiperItem from './components/SwiperItem.vue'
 import { getHomeDataAPI } from '@/api/home'
+import MenuItem from './components/MenuItem.vue'
 // 获取推荐歌单 , 渲染搜索框
 const personalizedList = ref([])
 const getPersonalized = async () => {
@@ -33,7 +34,8 @@ if (curTime.value >= 0 && curTime.value < 6) {
 
 // 获取首页全部数据
 const homeData = ref({})
-const bannerList = ref([])
+const bannerList = ref([]) //banner 图
+const menuList = ref([]) // 菜单
 const getHomeData = async () => {
   const res = await getHomeDataAPI()
   console.log(res)
@@ -44,10 +46,12 @@ const getHomeData = async () => {
     if (item.blockCode === 'HOMEPAGE_BANNER') {
       bannerList.value = item.extInfo.banners
     }
+    if (item.blockCode === 'HOMEPAGE_BLOCK_OLD_DRAGON_BALL') {
+      menuList.value = item.creatives[0].resources.map((cur) => cur.uiElement)
+      console.log(menuList.value, 'menu')
+    }
   })
-  console.log(bannerList.value)
 }
-
 getHomeData()
 </script>
 
@@ -76,6 +80,7 @@ getHomeData()
     </div>
     <div class="w-[100%] h-[50px] time">{{ timeText[timeTextKey] }}</div>
     <SwiperItem :bannerList="bannerList" />
+    <MenuItem :menuList="menuList" />
     <!-- <div class="recomendList w-[100%] overflow-auto flex">
       <RecommendItem v-for="cur in 8" :key="cur" />
     </div> -->
