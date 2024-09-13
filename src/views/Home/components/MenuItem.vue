@@ -1,8 +1,10 @@
 <script setup>
 import { ref } from 'vue'
-defineProps({
-  menuList: Array
+const props = defineProps({
+  data: Object
 })
+const menuList = ref([])
+menuList.value = props.data.creatives[0].resources.map((item) => item.uiElement)
 // 每日推荐的 日期
 const curDate = ref(new Date().getDate())
 </script>

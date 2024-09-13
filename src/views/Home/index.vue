@@ -1,10 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { getPersonalizedAPI } from '@/api/personalized'
-import RecommendItem from './components/RecommendItem.vue'
-import SwiperItem from './components/SwiperItem.vue'
+import CurrType from './components/CurrType.vue'
 import { getHomeDataAPI } from '@/api/home'
-import MenuItem from './components/MenuItem.vue'
+
 // 获取推荐歌单 , 渲染搜索框
 const personalizedList = ref([])
 const getPersonalized = async () => {
@@ -34,26 +33,14 @@ if (curTime.value >= 0 && curTime.value < 6) {
 
 // 获取首页全部数据
 const homeData = ref({})
-const bannerList = ref([]) //banner 图
-const menuList = ref([]) // 菜单
+const blockCodeList = ref([])
+
 const getHomeData = async () => {
   const res = await getHomeDataAPI()
-  console.log(res)
   homeData.value = res.data
-  // 筛选出 banner 图数据
-
-  homeData.value.blocks?.forEach((item) => {
-    if (item.blockCode === 'HOMEPAGE_BANNER') {
-      bannerList.value = item.extInfo.banners
-    }
-    if (item.blockCode === 'HOMEPAGE_BLOCK_OLD_DRAGON_BALL') {
-      menuList.value = item.creatives[0].resources.map((cur) => cur.uiElement)
-      console.log(menuList.value, 'menu')
-    }
-  })
+  blockCodeList.value = homeData.value.blocks.map((item) => item.blockCode)
 }
 getHomeData()
-
 const loading = ref(true)
 const onRefresh = () => {
   setTimeout(() => {
@@ -91,11 +78,13 @@ const onRefresh = () => {
       @refresh="onRefresh"
     >
       <div class="w-[100%] h-[50px] time">{{ timeText[timeTextKey] }}</div>
-      <SwiperItem :bannerList="bannerList" />
-      <MenuItem :menuList="menuList" />
-      <div class="recomendList w-[100%] mt-[5vw] h-[51vw] overflow-auto flex">
-        <RecommendItem v-for="cur in 8" :key="cur" />
-      </div>
+
+      <CurrType
+        v-for="item in blockCodeList"
+        :key="item"
+        :curCom="item"
+        :homeData="homeData?.blocks"
+      />
     </van-pull-refresh>
   </div>
 </template>

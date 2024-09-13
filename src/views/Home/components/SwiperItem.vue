@@ -1,7 +1,10 @@
 <script setup>
-defineProps({
-  bannerList: Array
+import { ref } from 'vue'
+const props = defineProps({
+  data: Object
 })
+const bannerList = ref([])
+bannerList.value = props.data.extInfo?.banners
 </script>
 <template>
   <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
