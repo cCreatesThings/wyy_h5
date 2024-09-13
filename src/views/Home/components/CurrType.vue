@@ -3,6 +3,7 @@ import RecommendItem from './RecommendItem.vue'
 import SwiperItem from './SwiperItem.vue'
 import MenuItem from './MenuItem.vue'
 import CustomSong from './CustomSong.vue'
+import NewSong from './NewSong.vue'
 defineProps({
   homeData: Array,
   curCom: String
@@ -12,8 +13,8 @@ const blockCodeList = {
   HOMEPAGE_BANNER: SwiperItem,
   HOMEPAGE_BLOCK_OLD_DRAGON_BALL: MenuItem,
   HOMEPAGE_BLOCK_PLAYLIST_RCMD: RecommendItem,
-  HOMEPAGE_BLOCK_STYLE_RCMD: CustomSong
-  //   4: 'HOMEPAGE_BLOCK_NEW_ALBUM_NEW_SONG',
+  HOMEPAGE_BLOCK_STYLE_RCMD: CustomSong,
+  HOMEPAGE_BLOCK_NEW_ALBUM_NEW_SONG: NewSong
   //   5: 'HOMEPAGE_BLOCK_HOT_TOPIC',
   //   6: 'HOMEPAGE_MUSIC_CALENDAR',
   //   7: 'HOMEPAGE_MUSIC_MLOG',

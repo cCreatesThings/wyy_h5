@@ -12,7 +12,7 @@ console.log(props.data.creatives)
     </div>
     <div class="palyItem flex overflow-x-auto col">
       <div
-        class="recommendItem mr-[10px] w-[30vw] h-[52vw] flex-shrink-0 rounded-[8px]"
+        class="recommendItem mr-[10px] w-[30vw] h-[55vw] flex-shrink-0 rounded-[8px]"
         v-for="item in data.creatives"
         :key="item.creativeId"
       >
@@ -21,11 +21,11 @@ console.log(props.data.creatives)
           width="100%"
           height="80%"
         >
-          <template #default
-            ><span class="mainTitle">{{
-              item.uiElement.mainTitle.title
-            }}</span></template
-          >
+          <template #default>
+            <span class="mainTitle">
+              {{ item.uiElement.mainTitle.title }}
+            </span>
+          </template>
         </van-image>
       </div>
     </div>

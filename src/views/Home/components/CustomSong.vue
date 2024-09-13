@@ -1,9 +1,14 @@
 <script setup>
 // HOMEPAGE_BLOCK_STYLE_RCMD
 
-defineProps({
+const props = defineProps({
   data: Object
 })
+console.log(props.data.uiElement.subTitle.title)
+
+const playSong = (id) => {
+  console.log(id)
+}
 </script>
 
 <template>
@@ -24,18 +29,25 @@ defineProps({
         >
           <div class="song-img">
             <van-image
-              :src="cur.resourceExtInfo.song.al.picUrl"
+              lazy-load
+              :src="
+                cur.resourceExtInfo.songData?.album.picUrl ||
+                cur.uiElement.image.imageUrl
+              "
               width="13vw"
               height="13vw"
-            />
+            >
+              <template v-slot:loading>
+                <van-loading type="spinner" size="20" /> </template
+            ></van-image>
             <span class="songName absolute top-0 test-[6vw] left-[14vw]">{{
-              cur.resourceExtInfo.song.name
+              cur.uiElement.mainTitle.title
             }}</span>
             <span
               class="author absolute bottom-0 left-[16vw] text-[3vw] text-[gray]"
-              >{{ cur.resourceExtInfo.song.ar[0].name }}</span
+              >{{ cur.resourceExtInfo.artists[0]?.name }}</span
             >
-            <span class="icon">
+            <span class="icon" @click="playSong(cur.resourceId)">
               <Icon
                 icon="fe:play"
                 class="absolute text-[5vw] text-gray-700 right-[5vw] bottom-[50%]"
