@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { getPersonalizedAPI } from '@/api/personalized'
-import RecommendItem from './components/RecommendItem.vue'
+// import RecommendItem from './components/RecommendItem.vue'
+import SwiperItem from './components/SwiperItem.vue'
+import { getHomeDataAPI } from '@/api/home'
 // 获取推荐歌单 , 渲染搜索框
 const personalizedList = ref([])
 const getPersonalized = async () => {
@@ -28,6 +30,25 @@ if (curTime.value >= 0 && curTime.value < 6) {
 } else if (curTime.value >= 18 && curTime.value < 24) {
   timeTextKey.value = 3
 }
+
+// 获取首页全部数据
+const homeData = ref({})
+const bannerList = ref([])
+const getHomeData = async () => {
+  const res = await getHomeDataAPI()
+  console.log(res)
+  homeData.value = res.data
+  // 筛选出 banner 图数据
+
+  homeData.value.blocks?.forEach((item) => {
+    if (item.blockCode === 'HOMEPAGE_BANNER') {
+      bannerList.value = item.extInfo.banners
+    }
+  })
+  console.log(bannerList.value)
+}
+
+getHomeData()
 </script>
 
 <template>
@@ -37,11 +58,14 @@ if (curTime.value >= 0 && curTime.value < 6) {
       <div
         class="search flex items-center flex-1 bg-[#eaedf2] rounded-[50px] ml-[10px] mr-[10px]"
       >
-        <Icon icon="bitcoin-icons:search-filled" class="ml-[5px]" />
+        <Icon
+          icon="bitcoin-icons:search-filled"
+          class="ml-[5px] text-[3.564vw]"
+        />
         <div class="searchKeyWord ml-[10px]">
           <van-swipe :show-indicators="false" :autoplay="3000" loop vertical>
             <van-swipe-item
-              class="swipe-item"
+              class="swipe-item text-[3.564vw]"
               v-for="(item, index) in personalizedList"
               :key="index"
               >{{ item.name }}</van-swipe-item
@@ -51,9 +75,10 @@ if (curTime.value >= 0 && curTime.value < 6) {
       </div>
     </div>
     <div class="w-[100%] h-[50px] time">{{ timeText[timeTextKey] }}</div>
-    <div class="recomendList w-[100%] overflow-auto flex">
+    <SwiperItem :bannerList="bannerList" />
+    <!-- <div class="recomendList w-[100%] overflow-auto flex">
       <RecommendItem v-for="cur in 8" :key="cur" />
-    </div>
+    </div> -->
   </div>
 </template>
 
