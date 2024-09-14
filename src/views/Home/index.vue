@@ -56,10 +56,7 @@ const onRefresh = () => {
       <div
         class="search flex items-center flex-1 bg-[#eaedf2] rounded-[50px] ml-[10px] mr-[10px]"
       >
-        <Icon
-          icon="bitcoin-icons:search-filled"
-          class="ml-[5px] text-[3.564vw]"
-        />
+        <Icon icon="bitcoin-icons:search-filled" class="ml-[5px] text-[8vw]" />
         <div class="searchKeyWord ml-[10px]">
           <van-swipe :show-indicators="false" :autoplay="3000" loop vertical>
             <van-swipe-item
@@ -77,7 +74,9 @@ const onRefresh = () => {
       v-model="loading"
       @refresh="onRefresh"
     >
-      <div class="w-[100%] h-[50px] time">{{ timeText[timeTextKey] }}</div>
+      <div class="w-[100%] h-[50px] text-[8vw] time">
+        {{ timeText[timeTextKey] }}
+      </div>
 
       <CurrType
         v-for="item in blockCodeList"

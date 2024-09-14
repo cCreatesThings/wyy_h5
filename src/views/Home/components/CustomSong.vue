@@ -1,10 +1,9 @@
 <script setup>
 // HOMEPAGE_BLOCK_STYLE_RCMD
 
-const props = defineProps({
+defineProps({
   data: Object
 })
-console.log(props.data.uiElement.subTitle.title)
 
 const playSong = (id) => {
   console.log(id)
@@ -40,9 +39,10 @@ const playSong = (id) => {
               <template v-slot:loading>
                 <van-loading type="spinner" size="20" /> </template
             ></van-image>
-            <span class="songName absolute top-0 test-[6vw] left-[14vw]">{{
-              cur.uiElement.mainTitle.title
-            }}</span>
+            <span
+              class="songName absolute top-0 w-[60vw] text-[4vw] left-[14vw]"
+              >{{ cur.uiElement.mainTitle.title }}</span
+            >
             <span
               class="author absolute bottom-0 left-[16vw] text-[3vw] text-[gray]"
               >{{ cur.resourceExtInfo.artists[0]?.name }}</span
@@ -73,7 +73,6 @@ const playSong = (id) => {
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   text-overflow: ellipsis;
-  width: 100%;
   overflow: hidden;
 }
 </style>
