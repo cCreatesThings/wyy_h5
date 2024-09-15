@@ -7,7 +7,7 @@ const active = ref(0)
 </script>
 <template>
   <div class="tabbarBox">
-    <PlayMusic />
+    <PlayMusic class="mb-[25vw] fixed bottom-[-13vw]" />
     <van-tabbar
       v-model="active"
       @change="active = $event"

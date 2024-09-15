@@ -14,3 +14,22 @@ export const getMusicUrlAPI = (id) => {
     }
   })
 }
+
+// 接口地址 : /search 或者 /cloudsearch(更全)
+
+// 调用例子 :
+
+/**
+ * @description 搜索歌曲
+ * @param  keywords: 海阔天空
+ * @url  /search
+ */
+
+export const searchMusicAPI = (keywords) => {
+  return request({
+    url: '/search',
+    params: {
+      keywords
+    }
+  })
+}

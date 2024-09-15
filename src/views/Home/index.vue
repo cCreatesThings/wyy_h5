@@ -3,6 +3,8 @@ import { ref } from 'vue'
 import { getPersonalizedAPI } from '@/api/personalized'
 import CurrType from './components/CurrType.vue'
 import { getHomeDataAPI } from '@/api/home'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 // 获取推荐歌单 , 渲染搜索框
 const personalizedList = ref([])
@@ -47,6 +49,13 @@ const onRefresh = () => {
     loading.value = false
   }, 1000)
 }
+const router = useRouter()
+const gotoSearch = () => {
+  const useStore = useUserStore()
+  useStore.setShowTabbar(false)
+  router.push('/search')
+  // 隐藏tabbar
+}
 </script>
 
 <template>
@@ -54,6 +63,7 @@ const onRefresh = () => {
     <div class="navbar sticky top-0 bg-white flex z-50 mt-[5px]">
       <div><Icon icon="ic:round-menu" class="icon" /></div>
       <div
+        @click="gotoSearch"
         class="search flex items-center flex-1 bg-[#eaedf2] rounded-[50px] ml-[10px] mr-[10px]"
       >
         <Icon icon="bitcoin-icons:search-filled" class="ml-[5px] text-[8vw]" />

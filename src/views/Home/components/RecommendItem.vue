@@ -6,7 +6,6 @@ const props = defineProps({
 })
 const list = ref([])
 list.value = props.data.creatives.map((item) => item.resources).flat(Infinity)
-console.log(list)
 </script>
 
 <template>

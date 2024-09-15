@@ -5,7 +5,12 @@ import { usePlayMusicStore } from '@/stores/playMusic'
 const audioRef = ref(null)
 
 const playMusicStore = usePlayMusicStore()
-onMounted(() => playMusicStore.setShowIcon(false))
+
+// 网页刷新, 音乐暂停
+onMounted(function () {
+  playMusicStore.setShowIcon(false)
+  audioRef.value.pause()
+})
 const music = (type) => {
   if (type === 'play') {
     audioRef.value.play()
@@ -18,7 +23,7 @@ const music = (type) => {
 </script>
 
 <template>
-  <div class="palyMusic flex items-center border mb-[25vw] w-[90vw] h-[12vw]">
+  <div class="palyMusic flex items-center border w-[90vw] h-[12vw]">
     <van-image
       v-if="playMusicStore.musicInfo.pic"
       width="11vw"
@@ -45,7 +50,13 @@ const music = (type) => {
       <span class="text text-[2.456vw]">加载中,请耐心等待...</span
       ><Icon icon="line-md:loading-twotone-loop" />
     </div>
-    <audio ref="audioRef" autoplay :src="playMusicStore.musicInfo.url" />
+    <audio
+      @ended="playMusicStore.setShowIcon(false)"
+      @pause="playMusicStore.setShowIcon(false)"
+      ref="audioRef"
+      autoplay
+      :src="playMusicStore.musicInfo.url"
+    />
     <div
       class="playIcon ml-auto mr-[4vw] text-white"
       v-if="playMusicStore.musicInfo.url"
@@ -68,8 +79,6 @@ const music = (type) => {
 
 <style scoped>
 .palyMusic {
-  position: fixed;
-  bottom: -13vw;
   background: #fdbeef;
   border-radius: 0 50px 50px 0;
 }

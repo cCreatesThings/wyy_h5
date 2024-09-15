@@ -27,6 +27,10 @@ const router = createRouter({
     {
       path: '/dynamic',
       component: () => import('@/views/Dynamic/index.vue')
+    },
+    {
+      path: '/search',
+      component: () => import('@/views/SearchMusic/index.vue')
     }
   ]
 })
@@ -36,9 +40,10 @@ router.beforeEach((to) => {
   const userStore = useUserStore()
   // console.log(to, from)
   if (to.path === '/login') {
-    userStore.showTabbar = false
+    userStore.setShowTabbar(false)
     return true
   } else {
+    userStore.setShowTabbar(true)
     return true
   }
 })
