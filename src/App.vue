@@ -4,6 +4,8 @@ const userStore = useUserStore()
 import TabBar from './views/components/TabBar.vue'
 </script>
 <template>
-  <RouterView />
-  <TabBar v-show="userStore.showTabbar" />
+  <div class="container pb-[10vw]">
+    <RouterView />
+    <TabBar v-show="userStore.showTabbar" />
+  </div>
 </template>

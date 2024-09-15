@@ -1,12 +1,23 @@
 <script setup>
 // HOMEPAGE_BLOCK_STYLE_RCMD
+import { usePlayMusicStore } from '@/stores/playMusic'
 
 defineProps({
   data: Object
 })
 
-const playSong = (id) => {
-  console.log(id)
+const playSong = (item) => {
+  const playMusicStore = usePlayMusicStore()
+  const obj = {
+    author: item.resourceExtInfo.artists[0].name,
+    song: item.resourceExtInfo.songData?.name || item.uiElement.mainTitle.title,
+    pic:
+      item.resourceExtInfo.songData?.album.picUrl ||
+      item.uiElement.image.imageUrl,
+    id: item.resourceExtInfo.songData?.id || item.resourceId
+  }
+
+  playMusicStore.setMusicInfo(obj)
 }
 </script>
 
@@ -47,7 +58,7 @@ const playSong = (id) => {
               class="author absolute bottom-0 left-[16vw] text-[3vw] text-[gray]"
               >{{ cur.resourceExtInfo.artists[0]?.name }}</span
             >
-            <span class="icon" @click="playSong(cur.resourceId)">
+            <span class="icon" @click="playSong(cur)">
               <Icon
                 icon="fe:play"
                 class="absolute text-[5vw] text-gray-700 right-[5vw] bottom-[50%]"
