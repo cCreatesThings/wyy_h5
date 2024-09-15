@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { usePlayMusicStore } from '@/stores/playMusic'
 
 const audioRef = ref(null)
@@ -7,10 +7,10 @@ const audioRef = ref(null)
 const playMusicStore = usePlayMusicStore()
 
 // 网页刷新, 音乐暂停
-onMounted(function () {
+window.onbeforeunload = function () {
   playMusicStore.setShowIcon(false)
   audioRef.value.pause()
-})
+}
 const music = (type) => {
   if (type === 'play') {
     audioRef.value.play()
@@ -28,8 +28,12 @@ const music = (type) => {
       v-if="playMusicStore.musicInfo.pic"
       width="11vw"
       height="11.5vw"
+      lazy-load
       :src="playMusicStore.musicInfo.pic"
-    />
+    >
+      <template v-slot:loading>
+        <van-loading type="spinner" size="20" /> </template
+    ></van-image>
     <div class="pic" v-else>
       <Icon
         icon="ri:netease-cloud-music-fill"
@@ -79,7 +83,7 @@ const music = (type) => {
 
 <style scoped>
 .palyMusic {
-  background: #fdbeef;
+  background: #54d7e6;
   border-radius: 0 50px 50px 0;
 }
 .songName {

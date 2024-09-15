@@ -1,5 +1,7 @@
 import './style.css'
 import './assets/base.css'
+import 'vant/lib/toast/style'
+import 'vant/lib/loading/style'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'

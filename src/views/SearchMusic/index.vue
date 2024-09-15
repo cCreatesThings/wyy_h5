@@ -1,13 +1,16 @@
 <script setup>
+import { searchMusicAPI } from '@/api/music'
+import { showToast } from 'vant'
 import { ref, onMounted } from 'vue'
-// import PlayMusic from '../components/PlayMusic.vue'
+import { useRouter } from 'vue-router'
+import SearchMusicList from './components/SearchMusicList.vue'
+import { usePlayMusicStore } from '@/stores/playMusic'
+const palyMusicStore = usePlayMusicStore()
 
 const searchValue = ref('')
 const activeTab = ref(0)
 const windowWidth = ref(0)
 const deleteMode = ref(false)
-
-const searchHistory = ref(['dehors', 'JORDANN', '热门歌曲'])
 
 const hotSearchList = ref([
   '罗生门',
@@ -37,16 +40,18 @@ const listeningList = ref([
   '云边有个小卖部'
 ])
 
+const router = useRouter()
 const onClickLeft = () => {
-  console.log('返回上一页')
+  router.back()
 }
 
 const toggleDeleteMode = () => {
   deleteMode.value = !deleteMode.value
 }
 
-const deleteHistoryItem = (index) => {
-  searchHistory.value.splice(index, 1)
+const deleteHistoryItem = (str) => {
+  // searchHistory.value.splice(index, 1)
+  palyMusicStore.delSearchHistory(str)
 }
 
 onMounted(() => {
@@ -55,6 +60,21 @@ onMounted(() => {
     windowWidth.value = window.innerWidth
   })
 })
+// 搜索歌曲
+const searchMusicList = ref([])
+const search = async () => {
+  if (!searchValue.value) return showToast({ message: '请输入搜索内容' })
+  palyMusicStore.addSearchHistory(searchValue.value)
+  const res = await searchMusicAPI(searchValue.value)
+
+  searchMusicList.value = res.result.songs
+}
+
+// 点击搜索历史文字
+const searchHistoryFn = (index) => {
+  searchValue.value = palyMusicStore.searchHistory[index]
+  search()
+}
 </script>
 <template>
   <div class="song-search">
@@ -63,7 +83,8 @@ onMounted(() => {
         <div class="search-container">
           <van-search
             v-model="searchValue"
-            placeholder="Dehors JORDANN"
+            placeholder="搜你想搜的"
+            @keyup.enter="search"
             shape="round"
             background="#ffffff"
             :clearable="false"
@@ -72,114 +93,120 @@ onMounted(() => {
               <van-icon name="search text-[4vw]" />
             </template>
           </van-search>
-          <van-button size="small" type="primary" class="search-btn"
+          <van-button
+            @click="search"
+            size="small"
+            type="primary"
+            class="search-btn"
             >搜索</van-button
           >
         </div>
       </template>
     </van-nav-bar>
-
-    <van-tabs v-model:active="activeTab" animated sticky>
-      <van-tab>
-        <template #title>
-          <div class="custom-tab">
-            <van-icon name="user-o" />
-            <span>歌手</span>
-          </div>
-        </template>
-      </van-tab>
-      <van-tab>
-        <template #title>
-          <div class="custom-tab">
-            <van-icon name="music-o" />
-            <span>曲风</span>
-          </div>
-        </template>
-      </van-tab>
-      <van-tab>
-        <template #title>
-          <div class="custom-tab">
-            <van-icon name="cluster-o" />
-            <span>专区</span>
-          </div>
-        </template>
-      </van-tab>
-      <van-tab>
-        <template #title>
-          <div class="custom-tab">
-            <van-icon name="music" />
-            <span>识曲</span>
-          </div>
-        </template>
-      </van-tab>
-    </van-tabs>
-
-    <div class="content">
-      <div class="search-history">
-        <div class="section-header">
-          <span>搜索历史</span>
-          <van-icon name="delete" @click="toggleDeleteMode" />
-        </div>
-        <div
-          v-for="(item, index) in searchHistory"
-          :key="index"
-          class="history-item"
+    <div class="search-history">
+      <div class="section-header">
+        <span>搜索历史</span>
+        <van-icon name="delete" @click="toggleDeleteMode" />
+      </div>
+      <div
+        v-for="(item, index) in palyMusicStore.searchHistory"
+        :key="index"
+        class="history-item text-[3vw]"
+        @click="searchHistoryFn(index)"
+      >
+        {{ item }}
+        <span
+          v-if="deleteMode"
+          class="delete-btn"
+          @click.stop="deleteHistoryItem(item)"
+          >×</span
         >
-          {{ item }}
-          <span
-            v-if="deleteMode"
-            class="delete-btn"
-            @click="deleteHistoryItem(index)"
-            >×</span
-          >
-        </div>
-      </div>
-
-      <div class="guess-like">
-        <div class="section-header">猜你喜欢</div>
-        <div class="guess-tags">
-          <van-tag round type="primary">Dehors</van-tag>
-          <van-tag round type="primary">Dehors (中法合唱版)</van-tag>
-        </div>
-      </div>
-
-      <div class="ranking-lists">
-        <van-swipe :show-indicators="false" :width="windowWidth">
-          <van-swipe-item>
-            <div class="ranking-section">
-              <div class="section-header">热搜榜 <van-icon name="play" /></div>
-              <div class="ranking-list">
-                <van-cell-group>
-                  <van-cell
-                    v-for="(item, index) in hotSearchList"
-                    :key="index"
-                    :title="item"
-                    :class="{ 'red-text': index < 3 }"
-                  />
-                </van-cell-group>
-              </div>
-            </div>
-          </van-swipe-item>
-          <van-swipe-item>
-            <div class="ranking-section">
-              <div class="section-header">听书榜</div>
-              <div class="ranking-list">
-                <van-cell-group>
-                  <van-cell
-                    v-for="(item, index) in listeningList"
-                    :key="index"
-                    :title="item"
-                  />
-                </van-cell-group>
-              </div>
-            </div>
-          </van-swipe-item>
-        </van-swipe>
       </div>
     </div>
-    <!-- <div class="play-music-wrapper">
-      <PlayMusic />
-    </div> -->
+
+    <SearchMusicList :musicList="searchMusicList" v-if="searchValue" />
+    <template v-else>
+      <van-tabs v-model:active="activeTab" animated sticky>
+        <van-tab>
+          <template #title>
+            <div class="custom-tab">
+              <van-icon name="user-o" />
+              <span>歌手</span>
+            </div>
+          </template>
+        </van-tab>
+        <van-tab>
+          <template #title>
+            <div class="custom-tab">
+              <van-icon name="music-o" />
+              <span>曲风</span>
+            </div>
+          </template>
+        </van-tab>
+        <van-tab>
+          <template #title>
+            <div class="custom-tab">
+              <van-icon name="cluster-o" />
+              <span>专区</span>
+            </div>
+          </template>
+        </van-tab>
+        <van-tab>
+          <template #title>
+            <div class="custom-tab">
+              <van-icon name="music" />
+              <span>识曲</span>
+            </div>
+          </template>
+        </van-tab>
+      </van-tabs>
+
+      <div class="content">
+        <div class="guess-like">
+          <div class="section-header">猜你喜欢</div>
+          <div class="guess-tags">
+            <van-tag round type="primary">Dehors</van-tag>
+            <van-tag round type="primary">Dehors (中法合唱版)</van-tag>
+          </div>
+        </div>
+
+        <div class="ranking-lists">
+          <van-swipe :show-indicators="false" :width="windowWidth">
+            <van-swipe-item>
+              <div class="ranking-section">
+                <div class="section-header">
+                  热搜榜 <van-icon name="play" />
+                </div>
+                <div class="ranking-list">
+                  <van-cell-group>
+                    <van-cell
+                      v-for="(item, index) in hotSearchList"
+                      :key="index"
+                      :title="item"
+                      :class="{ 'red-text': index < 3 }"
+                    />
+                  </van-cell-group>
+                </div>
+              </div>
+            </van-swipe-item>
+            <van-swipe-item>
+              <div class="ranking-section">
+                <div class="section-header">听书榜</div>
+                <div class="ranking-list">
+                  <van-cell-group>
+                    <van-cell
+                      v-for="(item, index) in listeningList"
+                      :key="index"
+                      :title="item"
+                    />
+                  </van-cell-group>
+                </div>
+              </div>
+            </van-swipe-item>
+          </van-swipe>
+        </div>
+      </div>
+    </template>
   </div>
 </template>
 

@@ -28,7 +28,20 @@ export const usePlayMusicStore = defineStore(
       const res = await getMusicUrlAPI(val.id)
       showLoading.value = false
       musicInfo.value.url = res.data[0].url
-      //   musicInfo.value = val
+      showIcon.value = true
+    }
+
+    // 搜索历史
+    const searchHistory = ref([])
+    // 添加
+    const addSearchHistory = (val) => {
+      // 过滤掉重复的
+
+      !searchHistory.value.includes(val) && searchHistory.value.unshift(val)
+    }
+    // 过滤
+    const delSearchHistory = (str) => {
+      searchHistory.value = searchHistory.value.filter((item) => item !== str)
     }
 
     return {
@@ -36,9 +49,12 @@ export const usePlayMusicStore = defineStore(
       musicInfo,
       showLoading,
       showIcon,
+      searchHistory,
       showMusicFun,
       setMusicInfo,
-      setShowIcon
+      setShowIcon,
+      addSearchHistory,
+      delSearchHistory
     }
   },
   {

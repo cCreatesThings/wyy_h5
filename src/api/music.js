@@ -24,12 +24,29 @@ export const getMusicUrlAPI = (id) => {
  * @param  keywords: 海阔天空
  * @url  /search
  */
-
 export const searchMusicAPI = (keywords) => {
   return request({
     url: '/search',
     params: {
       keywords
+    }
+  })
+}
+
+// 必选参数 : ids: 音乐 id, 如 ids=347230
+
+// 接口地址 : /song/detail
+
+/**
+ * @description 获取歌曲详情
+ * @param  ids: 音乐 id, 如 ids=347230
+ * @url  /song/detail
+ */
+export const getMusicDetailAPI = (ids) => {
+  return request({
+    url: '/song/detail',
+    params: {
+      ids
     }
   })
 }
