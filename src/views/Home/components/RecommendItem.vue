@@ -1,8 +1,7 @@
 <script setup>
-const props = defineProps({
+defineProps({
   data: Object
 })
-console.log(props.data.creatives)
 </script>
 
 <template>

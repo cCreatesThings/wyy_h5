@@ -6,12 +6,14 @@ import App from './App.vue'
 import router from './router'
 import { Icon } from '@iconify/vue'
 import { Lazyload } from 'vant'
-import piniaPersist from 'pinia-plugin-persist'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 const app = createApp(App)
 app.component('Icon', Icon)
 app.use(Lazyload)
-app.use(createPinia().use(piniaPersist))
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
 app.use(router)
 
 app.mount('#app')

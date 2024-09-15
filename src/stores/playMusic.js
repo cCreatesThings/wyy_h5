@@ -11,6 +11,12 @@ export const usePlayMusicStore = defineStore(
     const showMusicFun = (val) => {
       showMusic.value = val
     }
+
+    // 控制显示播放按钮
+    const showIcon = ref(true)
+    const setShowIcon = (val) => {
+      showIcon.value = val
+    }
     // 音乐信息详情
     const musicInfo = ref({
       song: '听你想听'
@@ -22,7 +28,6 @@ export const usePlayMusicStore = defineStore(
       const res = await getMusicUrlAPI(val.id)
       showLoading.value = false
       musicInfo.value.url = res.data[0].url
-
       //   musicInfo.value = val
     }
 
@@ -30,8 +35,10 @@ export const usePlayMusicStore = defineStore(
       showMusic,
       musicInfo,
       showLoading,
+      showIcon,
       showMusicFun,
-      setMusicInfo
+      setMusicInfo,
+      setShowIcon
     }
   },
   {

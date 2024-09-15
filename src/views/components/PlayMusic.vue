@@ -1,18 +1,18 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { usePlayMusicStore } from '@/stores/playMusic'
-// 控制显示播放按钮
-const showIcon = ref(false)
+
 const audioRef = ref(null)
 
 const playMusicStore = usePlayMusicStore()
+onMounted(() => playMusicStore.setShowIcon(false))
 const music = (type) => {
   if (type === 'play') {
-    showIcon.value = false
     audioRef.value.play()
+    playMusicStore.setShowIcon(true)
   } else {
-    showIcon.value = true
     audioRef.value.pause()
+    playMusicStore.setShowIcon(false)
   }
 }
 </script>
@@ -52,7 +52,7 @@ const music = (type) => {
     >
       <Icon
         @click="music('play')"
-        v-if="showIcon"
+        v-if="!playMusicStore.showIcon"
         icon="icon-park-outline:play"
         class="text-[7.5vw]"
       />

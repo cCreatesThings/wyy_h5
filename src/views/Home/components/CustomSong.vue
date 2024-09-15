@@ -6,7 +6,7 @@ defineProps({
   data: Object
 })
 
-const playSong = (item) => {
+const playSong = async (item) => {
   const playMusicStore = usePlayMusicStore()
   const obj = {
     author: item.resourceExtInfo.artists[0].name,
@@ -17,7 +17,8 @@ const playSong = (item) => {
     id: item.resourceExtInfo.songData?.id || item.resourceId
   }
 
-  playMusicStore.setMusicInfo(obj)
+  await playMusicStore.setMusicInfo(obj)
+  playMusicStore.setShowIcon(true)
 }
 </script>
 
