@@ -1,7 +1,12 @@
 <script setup>
-defineProps({
+import { formatLargeNumber } from '@/utils/formatLargeNum'
+import { ref } from 'vue'
+const props = defineProps({
   data: Object
 })
+const list = ref([])
+list.value = props.data.creatives.map((item) => item.resources).flat(Infinity)
+console.log(list)
 </script>
 
 <template>
@@ -11,10 +16,18 @@ defineProps({
     </div>
     <div class="palyItem flex overflow-x-auto col">
       <div
-        class="recommendItem mr-[10px] w-[30vw] h-[55vw] flex-shrink-0 rounded-[8px]"
-        v-for="item in data.creatives"
+        class="recommendItem mr-[10px] relative w-[30vw] h-[55vw] flex-shrink-0 rounded-[8px]"
+        v-for="item in list"
         :key="item.creativeId"
       >
+        <div
+          class="playCount flex absolute z-50 top-[2vw] left-[2vw] text-[white]"
+        >
+          <Icon icon="ic:round-headset" class="text-[5vw]" />
+          <span class="text-[3vw] font-bold">
+            {{ formatLargeNumber(item.resourceExtInfo.playCount) }}</span
+          >
+        </div>
         <van-image
           :src="item.uiElement.image.imageUrl"
           width="100%"
