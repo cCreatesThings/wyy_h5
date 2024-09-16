@@ -1,8 +1,8 @@
 import axios from 'axios'
 import { closeToast, showLoadingToast } from 'vant'
 
-const baseURL = 'https://wangyi.vercel.app/'
-// const baseURL = 'http://192.168.137.1:5173/api'
+// const baseURL = 'https://wangyi.vercel.app/'
+const baseURL = 'http://localhost:5173/api'
 
 const request = axios.create({
   baseURL,

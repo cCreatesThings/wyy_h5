@@ -57,6 +57,7 @@ const music = (type) => {
     <audio
       @ended="playMusicStore.setShowIcon(false)"
       @pause="playMusicStore.setShowIcon(false)"
+      @play="playMusicStore.setShowIcon(true)"
       ref="audioRef"
       autoplay
       :src="playMusicStore.musicInfo.url"
