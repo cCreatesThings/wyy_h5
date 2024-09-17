@@ -34,10 +34,12 @@ export const usePlayMusicStore = defineStore(
 
       // 调用获取音乐详情的接口
       const curMuDetail = await getMusicDetailAPI(id)
+      console.log(curMuDetail.songs.length === 0)
+
       if (curMuDetail.songs.length === 0) {
         curMusicId.value = curMusicId.value + 1
+        setTimeout(() => showToast({ message: '暂无音源' }), 1000)
         nextMusic(curMusicId.value)
-        showToast({ message: '暂无音源', duration: 1500 })
         return
       }
 
