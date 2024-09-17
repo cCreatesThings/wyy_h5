@@ -20,6 +20,11 @@ const music = (type) => {
     playMusicStore.setShowIcon(false)
   }
 }
+
+// 播放结束
+const endedHandle = async (id) => {
+  await playMusicStore.nextMusic(id)
+}
 </script>
 
 <template>
@@ -41,10 +46,7 @@ const music = (type) => {
         style="color: #ff0000"
       />
     </div>
-    <div
-      class="flex flex-col justify-center ml-[4vw]"
-      v-if="playMusicStore.musicInfo.song"
-    >
+    <div class="flex flex-col justify-center ml-[4vw]" v-if="false">
       <span class="text-[3.5vw] songName">{{
         playMusicStore.musicInfo?.song
       }}</span>
@@ -55,10 +57,11 @@ const music = (type) => {
       ><Icon icon="line-md:loading-twotone-loop" />
     </div>
     <audio
-      @ended="playMusicStore.setShowIcon(false)"
+      @ended="endedHandle(playMusicStore.musicInfo.id)"
       @pause="playMusicStore.setShowIcon(false)"
       @play="playMusicStore.setShowIcon(true)"
       ref="audioRef"
+      controls
       autoplay
       :src="playMusicStore.musicInfo.url"
     />

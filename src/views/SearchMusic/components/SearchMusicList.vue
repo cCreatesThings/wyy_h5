@@ -1,23 +1,15 @@
 <script setup>
-import { getMusicDetailAPI } from '@/api/music'
+import { ref } from 'vue'
 import { usePlayMusicStore } from '@/stores/playMusic'
-defineProps({
+const props = defineProps({
   musicList: Array
 })
+const IdList = ref([])
 
 const playMusicStore = usePlayMusicStore()
 const getSongUrl = async (item) => {
-  const res = await getMusicDetailAPI(item.id)
-  const { id, name: song } = res.songs[0]
-  const { picUrl: pic } = res.songs[0].al
-  const { name: author } = res.songs[0].ar[0]
-  const obj = {
-    id,
-    song,
-    pic,
-    author
-  }
-  playMusicStore.setMusicInfo(obj)
+  IdList.value = props.musicList.map((item) => item.id)
+  playMusicStore.setMusicInfo(item.id, IdList.value)
 }
 </script>
 

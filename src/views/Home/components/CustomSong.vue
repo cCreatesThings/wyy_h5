@@ -1,22 +1,24 @@
 <script setup>
+import { ref } from 'vue'
 // HOMEPAGE_BLOCK_STYLE_RCMD
 import { usePlayMusicStore } from '@/stores/playMusic'
 
-defineProps({
+const props = defineProps({
   data: Object
 })
 const playMusicStore = usePlayMusicStore()
+const IdList = ref([])
+// 判断你是否有 resourceIdList
+if (!props.data.resourceIdList) {
+  IdList.value = props.data.creatives
+    .map((item) => item.resources)
+    .flat(2)
+    .map((cur) => cur.resourceId)
+} else {
+  IdList.value = props.data.resourceIdList
+}
 const playSong = async (item) => {
-  // const obj = {
-  //   author: item.resourceExtInfo.artists[0].name,
-  //   song: item.resourceExtInfo.songData?.name || item.uiElement.mainTitle.title,
-  //   pic:
-  //     item.resourceExtInfo.songData?.album.picUrl ||
-  //     item.uiElement.image.imageUrl,
-  //   id: item.resourceExtInfo.songData?.id || item.resourceId
-  // }
-
-  await playMusicStore.setMusicInfo(item.resourceId)
+  await playMusicStore.setMusicInfo(item.resourceId, IdList.value)
   playMusicStore.setShowIcon(true)
 }
 </script>
