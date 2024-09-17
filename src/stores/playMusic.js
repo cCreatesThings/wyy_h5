@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import { getMusicUrlAPI } from '@/api/music'
+import { getMusicUrlAPI, getMusicDetailAPI } from '@/api/music'
 
 export const usePlayMusicStore = defineStore(
   'palyMusic',
@@ -19,15 +19,27 @@ export const usePlayMusicStore = defineStore(
     }
     // 音乐信息详情
     const musicInfo = ref({
-      song: '听你想听'
+      song: '听你想听',
+      pic: '',
+      author: '',
+      url: ''
     })
-    const setMusicInfo = async (val) => {
-      // 调用获取音乐url 的接口
-      musicInfo.value = val
+    const setMusicInfo = async (id) => {
+      // 调用获取音乐详情的接口
+      const curMuDetail = await getMusicDetailAPI(id)
+      console.log(curMuDetail)
+      musicInfo.value = {
+        song: curMuDetail.songs[0].name,
+        pic: curMuDetail.songs[0].al.picUrl,
+        author: curMuDetail.songs[0].ar[0].name
+      }
       showLoading.value = true
-      const res = await getMusicUrlAPI(val.id)
-      showLoading.value = false
+      // 获取音乐url
+      const res = await getMusicUrlAPI(id)
       musicInfo.value.url = res.data[0].url
+      console.log(musicInfo.value)
+
+      showLoading.value = false
       showIcon.value = true
     }
 
@@ -36,7 +48,6 @@ export const usePlayMusicStore = defineStore(
     // 添加
     const addSearchHistory = (val) => {
       // 过滤掉重复的
-
       !searchHistory.value.includes(val) && searchHistory.value.unshift(val)
     }
     // 过滤

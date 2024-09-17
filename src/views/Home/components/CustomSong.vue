@@ -5,19 +5,18 @@ import { usePlayMusicStore } from '@/stores/playMusic'
 defineProps({
   data: Object
 })
-
+const playMusicStore = usePlayMusicStore()
 const playSong = async (item) => {
-  const playMusicStore = usePlayMusicStore()
-  const obj = {
-    author: item.resourceExtInfo.artists[0].name,
-    song: item.resourceExtInfo.songData?.name || item.uiElement.mainTitle.title,
-    pic:
-      item.resourceExtInfo.songData?.album.picUrl ||
-      item.uiElement.image.imageUrl,
-    id: item.resourceExtInfo.songData?.id || item.resourceId
-  }
+  // const obj = {
+  //   author: item.resourceExtInfo.artists[0].name,
+  //   song: item.resourceExtInfo.songData?.name || item.uiElement.mainTitle.title,
+  //   pic:
+  //     item.resourceExtInfo.songData?.album.picUrl ||
+  //     item.uiElement.image.imageUrl,
+  //   id: item.resourceExtInfo.songData?.id || item.resourceId
+  // }
 
-  await playMusicStore.setMusicInfo(obj)
+  await playMusicStore.setMusicInfo(item.resourceId)
   playMusicStore.setShowIcon(true)
 }
 </script>
@@ -56,9 +55,20 @@ const playSong = async (item) => {
               >{{ cur.uiElement.mainTitle.title }}</span
             >
             <span
-              class="author absolute bottom-0 left-[16vw] text-[3vw] text-[gray]"
-              >{{ cur.resourceExtInfo.artists[0]?.name }}</span
+              class="author flex items-center absolute bottom-0 left-[16vw] text-[3vw] text-[gray]"
             >
+              <van-button
+                v-if="cur.uiElement?.subTitle?.title"
+                hairline
+                type="danger"
+                size="mini"
+                plain
+                >{{ cur.uiElement?.subTitle?.title }}</van-button
+              >
+              <span class="ml-[1vw]">{{
+                cur.resourceExtInfo.artists[0]?.name
+              }}</span>
+            </span>
             <span class="icon" @click="playSong(cur)">
               <Icon
                 icon="fe:play"
