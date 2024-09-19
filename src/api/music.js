@@ -50,3 +50,34 @@ export const getMusicDetailAPI = (ids) => {
     }
   })
 }
+
+// 接口地址 : /playlist/detail
+
+// 调用例子 : /playlist/detail?id=24381616
+
+/**
+ * @description 获取推荐歌单详情
+ * @param {*} id 歌单 id
+ */
+export const getSongListDetailAPI = (id) => {
+  return request({
+    url: '/playlist/detail',
+    params: {
+      id
+    }
+  })
+}
+
+/**
+ * @description 调用后可获取歌单详情动态部分,如评论数,是否收藏,播放数
+ * @param {*} id
+ * @returns
+ */
+export const getSongListDetailDynamicAPI = (id) => {
+  return request({
+    url: '/playlist/detail/dynamic',
+    params: {
+      id
+    }
+  })
+}

@@ -63,7 +63,7 @@ const gotoSearch = () => {
 </script>
 
 <template>
-  <div class="home">
+  <div class="home p-[1vw]">
     <div class="navbar sticky top-0 bg-white flex z-50 mt-[5px]">
       <div><Icon icon="ic:round-menu" class="icon" /></div>
       <div

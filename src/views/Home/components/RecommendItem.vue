@@ -1,11 +1,25 @@
 <script setup>
 import { formatLargeNumber } from '@/utils/formatLargeNum'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { usePlayMusicStore } from '@/stores/playMusic'
+const playMusicStore = usePlayMusicStore()
+const router = useRouter()
 const props = defineProps({
   data: Object
 })
 const list = ref([])
 list.value = props.data.creatives.map((item) => item.resources).flat(Infinity)
+const gotoRecmdSonglist = (id) => {
+  router.push({
+    path: '/recmdSonglist',
+    query: {
+      id
+    }
+  })
+  // 隐藏tabbar
+  playMusicStore.showTabbarFun(false)
+}
 </script>
 
 <template>
@@ -18,6 +32,7 @@ list.value = props.data.creatives.map((item) => item.resources).flat(Infinity)
         class="recommendItem mr-[10px] relative w-[30vw] h-[55vw] flex-shrink-0 rounded-[8px]"
         v-for="item in list"
         :key="item.creativeId"
+        @click="gotoRecmdSonglist(item.resourceId)"
       >
         <div
           class="playCount flex absolute z-50 top-[2vw] left-[2vw] text-[white]"

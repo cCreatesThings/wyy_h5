@@ -28,7 +28,7 @@ const endedHandle = async (id) => {
 </script>
 
 <template>
-  <div class="palyMusic flex items-center border w-[90vw] h-[12vw]">
+  <div class="palyMusic flex items-center border w-[97vw] h-[12vw]">
     <van-image
       v-if="playMusicStore.musicInfo.pic"
       width="11vw"
