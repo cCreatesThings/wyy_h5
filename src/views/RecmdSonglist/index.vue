@@ -41,7 +41,7 @@ const playMusic = (id) => {
 const playAllMusic = () => {
   playMusicStore.setMusicInfo(
     songList.value.playlist.trackIds[0].id,
-    songList.value.playlist.trackIds
+    songList.value.playlist.trackIds.map((item) => item.id)
   )
 }
 </script>
