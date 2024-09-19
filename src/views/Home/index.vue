@@ -5,6 +5,10 @@ import CurrType from './components/CurrType.vue'
 import { getHomeDataAPI } from '@/api/home'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { usePlayMusicStore } from '@/stores/playMusic'
+// 显示tabbar
+const playMusicStore = usePlayMusicStore()
+playMusicStore.showTabbarFun(true)
 
 // 获取推荐歌单 , 渲染搜索框
 const personalizedList = ref([])

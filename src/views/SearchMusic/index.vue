@@ -6,7 +6,8 @@ import { useRouter } from 'vue-router'
 import SearchMusicList from './components/SearchMusicList.vue'
 import { usePlayMusicStore } from '@/stores/playMusic'
 const palyMusicStore = usePlayMusicStore()
-
+// 隐藏tabbar
+palyMusicStore.showTabbarFun(false)
 const searchValue = ref('')
 const activeTab = ref(0)
 const windowWidth = ref(0)

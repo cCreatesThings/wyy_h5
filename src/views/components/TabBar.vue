@@ -1,14 +1,20 @@
 <script setup>
 import { ref } from 'vue'
 import PlayMusic from '@/views/components/PlayMusic.vue'
+import { usePlayMusicStore } from '@/stores/playMusic'
+const playMusicStore = usePlayMusicStore()
 
 // tabbar 当前选中的索引
 const active = ref(0)
 </script>
 <template>
   <div class="tabbarBox">
-    <PlayMusic class="mb-[25vw] fixed bottom-[-13vw]" />
+    <PlayMusic
+      class="mb-[25vw] fixed"
+      :style="{ bottom: playMusicStore.showTabbar ? '-13vw' : '-25vw' }"
+    />
     <van-tabbar
+      v-if="playMusicStore.showTabbar"
       v-model="active"
       @change="active = $event"
       active-color="#ee0a24"

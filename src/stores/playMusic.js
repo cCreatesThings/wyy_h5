@@ -9,6 +9,11 @@ export const usePlayMusicStore = defineStore(
     // 控制底部音乐播放组件的显示与隐藏
     const showMusic = ref(true)
     const showLoading = ref(false)
+    //控制tabbar的显示与隐藏
+    const showTabbar = ref(true)
+    const showTabbarFun = (val) => {
+      showTabbar.value = val
+    }
     const showMusicFun = (val) => {
       showMusic.value = val
     }
@@ -88,12 +93,14 @@ export const usePlayMusicStore = defineStore(
       showIcon,
       searchHistory,
       rescouceIdList,
+      showTabbar,
       showMusicFun,
       setMusicInfo,
       setShowIcon,
       addSearchHistory,
       delSearchHistory,
-      nextMusic
+      nextMusic,
+      showTabbarFun
     }
   },
   {

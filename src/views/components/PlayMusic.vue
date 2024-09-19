@@ -46,7 +46,10 @@ const endedHandle = async (id) => {
         style="color: #ff0000"
       />
     </div>
-    <div class="flex flex-col justify-center ml-[4vw]" v-if="false">
+    <div
+      class="flex flex-col justify-center ml-[4vw]"
+      v-if="playMusicStore.musicInfo.song"
+    >
       <span class="text-[3.5vw] songName">{{
         playMusicStore.musicInfo?.song
       }}</span>
@@ -61,7 +64,6 @@ const endedHandle = async (id) => {
       @pause="playMusicStore.setShowIcon(false)"
       @play="playMusicStore.setShowIcon(true)"
       ref="audioRef"
-      controls
       autoplay
       :src="playMusicStore.musicInfo.url"
     />
@@ -89,6 +91,7 @@ const endedHandle = async (id) => {
 .palyMusic {
   background: #54d7e6;
   border-radius: 0 50px 50px 0;
+  transition: all 0.5s;
 }
 .songName {
   /* 单行显示省略号 */
