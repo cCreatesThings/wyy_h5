@@ -14,4 +14,9 @@ bannerList.value = props.data.extInfo?.banners
   </van-swipe>
 </template>
 
-<style scoped></style>
+<style scoped>
+.my-swipe {
+  width: 100%;
+  height: 35vw;
+}
+</style>

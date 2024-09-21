@@ -1,12 +1,22 @@
 <script setup>
+import { loginByPasswordAPI } from '@/api/login'
+import { useUserStore } from '@/stores/user'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const userStore = useUserStore()
+const router = useRouter()
 
 const formData = ref({
   phone: '',
   password: ''
 })
-const onSubmit = () => {
-  console.log('submit')
+const onSubmit = async (e) => {
+  const res = await loginByPasswordAPI(e)
+
+  if (res.code === 200) {
+    userStore.setUserInfo(res)
+    router.go(-1)
+  }
 }
 </script>
 
@@ -15,7 +25,7 @@ const onSubmit = () => {
     <van-cell-group inset>
       <van-field
         v-model="formData.phone"
-        name="手机号"
+        name="phone"
         label="手机号"
         placeholder="手机号"
         :rules="[{ required: true, message: '请填写手机号' }]"
@@ -24,7 +34,7 @@ const onSubmit = () => {
         <van-field
           v-model="formData.password"
           type="password"
-          name="密码"
+          name="password"
           label="密码"
           placeholder="密码"
           :rules="[{ required: true, message: '请填写密码' }]"

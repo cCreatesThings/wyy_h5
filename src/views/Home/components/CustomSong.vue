@@ -25,7 +25,7 @@ const playSong = async (item) => {
 
 <template>
   <div class="custom-song-container">
-    <div class="title text-[5vw] mt-[4vw]">
+    <div class="title text-[5vw] mt-[1vw]">
       {{ data.uiElement.subTitle.title }}
     </div>
     <div class="listBox flex overflow-x-auto">

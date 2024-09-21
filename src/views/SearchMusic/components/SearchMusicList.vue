@@ -14,7 +14,7 @@ const getSongUrl = async (item) => {
 </script>
 
 <template>
-  <div class="musicList">
+  <div class="musicList pl-[2vw]">
     <van-cell-group>
       <van-cell
         @click="getSongUrl(item)"

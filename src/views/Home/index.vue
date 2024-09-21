@@ -6,6 +6,8 @@ import { getHomeDataAPI } from '@/api/home'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { usePlayMusicStore } from '@/stores/playMusic'
+import { getUserDetailAPI } from '@/api/user'
+const userStore = useUserStore()
 // 显示tabbar
 const playMusicStore = usePlayMusicStore()
 playMusicStore.showTabbarFun(true)
@@ -18,6 +20,13 @@ const getPersonalized = async () => {
 }
 getPersonalized()
 
+// 获取用户详情
+const getUserDetail = async () => {
+  if (!userStore.userInfo.token) return
+  const res = await getUserDetailAPI(userStore.userInfo.account.id)
+  userStore.setUserDetail(res)
+}
+getUserDetail()
 // 时间提示文字
 const timeText = {
   0: '早上好',
@@ -56,9 +65,9 @@ const onRefresh = () => {
 const router = useRouter()
 const gotoSearch = () => {
   const useStore = useUserStore()
+  // 隐藏tabbar
   useStore.setShowTabbar(false)
   router.push('/search')
-  // 隐藏tabbar
 }
 </script>
 
@@ -88,8 +97,22 @@ const gotoSearch = () => {
       v-model="loading"
       @refresh="onRefresh"
     >
-      <div class="w-[100%] h-[50px] text-[8vw] time">
+      <div class="w-[100%] h-[50px] text-[8vw] time flex items-center">
         {{ timeText[timeTextKey] }}
+        <div
+          v-if="userStore?.userDetail?.profile.avatarUrl"
+          class="userinfo flex items-center ml-[auto]"
+        >
+          <van-image
+            round
+            width="8vw"
+            height="8vw"
+            :src="userStore?.userDetail?.profile.avatarUrl"
+          />
+          <span class="nickname pl-[2vw] text-[4vw] text-[red]">{{
+            userStore.userDetail.profile.nickname
+          }}</span>
+        </div>
       </div>
 
       <CurrType

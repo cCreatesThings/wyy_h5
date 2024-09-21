@@ -10,9 +10,23 @@ export const useUserStore = defineStore(
       showTabbar.value = val
     }
 
+    // 个人信息
+    const userInfo = ref({})
+    const userDetail = ref({})
+    const setUserDetail = (val) => {
+      userDetail.value = val
+    }
+    const setUserInfo = (val) => {
+      userInfo.value = val
+    }
+
     return {
       showTabbar,
-      setShowTabbar
+      userInfo,
+      userDetail,
+      setShowTabbar,
+      setUserInfo,
+      setUserDetail
     }
   },
   {

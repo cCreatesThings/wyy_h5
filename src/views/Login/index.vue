@@ -40,6 +40,7 @@ const curComponent = ref(PasswordLoginMarked)
 const showLoginTypeFn = () => {
   showLoginTypeState.value = !showLoginTypeState.value
 }
+// 切换登录方式的组件
 const toggleCurComFn = (item) => {
   curComponent.value = item.component
   showLoginTypeFn()
@@ -48,7 +49,7 @@ const toggleCurComFn = (item) => {
 
 <template>
   <div class="login">
-    <div class="logo">
+    <div class="logo pb-[13vw]">
       <Icon icon="tabler:brand-netease-music" class="logo" />
     </div>
     <component :is="curComponent"></component>
@@ -63,6 +64,7 @@ const toggleCurComFn = (item) => {
         v-for="item in loginType"
         @click="toggleCurComFn(item)"
         :key="item.name"
+        v-show="item.component !== curComponent"
         class="footer-item-line mr-[2vw] text-[3.456vw] text-[#1ab4fd]"
         >{{ item.name }}</span
       >
@@ -80,7 +82,7 @@ const toggleCurComFn = (item) => {
   font-size: 100px;
   color: red;
   height: 50%;
-  padding-top: 20%;
+  padding-top: 10%;
   display: flex;
   justify-content: center;
   align-items: center;

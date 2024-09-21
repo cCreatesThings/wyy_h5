@@ -29,7 +29,7 @@ const gotoRecmdSonglist = (id) => {
     </div>
     <div class="palyItem flex overflow-x-auto col">
       <div
-        class="recommendItem mr-[10px] relative w-[30vw] h-[55vw] flex-shrink-0 rounded-[8px]"
+        class="recommendItem mr-[10px] relative w-[30vw] flex-shrink-0 rounded-[8px]"
         v-for="item in list"
         :key="item.creativeId"
         @click="gotoRecmdSonglist(item.resourceId)"
@@ -45,7 +45,7 @@ const gotoRecmdSonglist = (id) => {
         <van-image
           :src="item.uiElement.image.imageUrl"
           width="100%"
-          height="80%"
+          height="30vw"
         >
           <template #default>
             <span class="mainTitle">
@@ -71,5 +71,8 @@ const gotoRecmdSonglist = (id) => {
   font-size: 3vw;
   width: 100%;
   overflow: hidden;
+}
+.recommendItem {
+  height: fit-content;
 }
 </style>

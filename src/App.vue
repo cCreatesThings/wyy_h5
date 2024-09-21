@@ -6,6 +6,6 @@ import TabBar from './views/components/TabBar.vue'
 <template>
   <div class="container pb-[10vw]">
     <RouterView />
-    <TabBar v-show="userStore.showTabbar" />
+    <TabBar v-if="userStore.showTabbar" />
   </div>
 </template>

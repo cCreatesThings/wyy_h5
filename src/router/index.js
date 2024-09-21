@@ -35,7 +35,11 @@ const router = createRouter({
     {
       path: '/recmdSonglist',
       component: () => import('@/views/RecmdSonglist/index.vue')
-    }
+    },
+    {
+      path: '/:catchAll(.*)',
+      component: () => import('@/views/NotFound/index.vue')
+    } // 捕获所有未匹配的路由
   ]
 })
 

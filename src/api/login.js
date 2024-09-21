@@ -5,13 +5,10 @@ import { request } from '@/utils/request'
  * @description /login/cellphone
  * @param 必选参数 phone: 手机号, captcha: 验证码
  */
-export function loginByPhoneAPI(phone, captcha) {
+export function loginByCaptchaAPI(params) {
   return request({
     url: '/login/cellphone',
-    params: {
-      phone,
-      captcha
-    }
+    params
   })
 }
 
@@ -34,12 +31,20 @@ export const getCaptchaAPI = (phone) => {
  * @params   必选参数 : phone: 手机号码, captcha: 验证码
  * @url 接口地址 : /captcha/verify
  */
-export const verifyCaptchaAPI = (phone, captcha) => {
+export const verifyCaptchaAPI = (params) => {
   return request({
     url: '/captcha/verify',
-    params: {
-      phone,
-      captcha
-    }
+    params
+  })
+}
+
+/**
+ *  @description 密码登录
+ * @param {*} :  phone password
+ */
+export const loginByPasswordAPI = (params) => {
+  return request({
+    url: '/login/cellphone',
+    params
   })
 }

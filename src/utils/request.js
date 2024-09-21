@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { closeToast, showLoadingToast } from 'vant'
+import { showFailToast, showLoadingToast } from 'vant'
 
 // const baseURL = 'https://wangyi.vercel.app/'
 const baseURL = 'http://localhost:5173/api'
@@ -22,18 +22,24 @@ request.interceptors.request.use(
 )
 
 // 响应拦截器
-let toast
 request.interceptors.response.use(
   (res) => {
-    // 显示加载提示
-    toast = showLoadingToast({
-      forbidClick: true,
-      message: '加载中...'
-    })
+    // 统一错误响应处理
+    if (res.data.code < 200 || res.data.code >= 300) {
+      return showFailToast({
+        message: res.data.msg,
+        forbidClick: true,
+        duration: 2000
+      })
+    }
     return res.data
   },
   (err) => {
-    closeToast(toast)
+    showFailToast({
+      message: err.response.data.msg || '网络异常',
+      forbidClick: true,
+      duration: 2000
+    })
     return Promise.reject(err)
   }
 )

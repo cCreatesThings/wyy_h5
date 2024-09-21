@@ -1,19 +1,26 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { usePlayMusicStore } from '@/stores/playMusic'
+import { showFailToast } from 'vant'
 
 const audioRef = ref(null)
 
 const playMusicStore = usePlayMusicStore()
 
 // 网页刷新, 音乐暂停
-window.onbeforeunload = function () {
+const loadFn = function () {
   playMusicStore.setShowIcon(false)
-  audioRef.value.pause()
+  audioRef.value?.pause()
 }
-const music = (type) => {
+window.onload = loadFn
+
+const pauseHandle = () => {
+  playMusicStore.setShowIcon(false)
+}
+const music = async (type) => {
   if (type === 'play') {
-    audioRef.value.play()
+    const res = await audioRef.value.play()
+    if (res) return showFailToast('播放失败')
     playMusicStore.setShowIcon(true)
   } else {
     audioRef.value.pause()
@@ -25,6 +32,19 @@ const music = (type) => {
 const endedHandle = async (id) => {
   await playMusicStore.nextMusic(id)
 }
+
+const errorHandle = () => {
+  showFailToast('播放失败')
+  playMusicStore.setShowIcon(false)
+}
+
+// 组件销毁时,取消所有事件监听
+onBeforeUnmount(() => {
+  audioRef.value.removeEventListener('ended', endedHandle)
+  audioRef.value.removeEventListener('pause', pauseHandle)
+  audioRef.value.removeEventListener('error', errorHandle)
+  window.removeEventListener('onload', loadFn)
+})
 </script>
 
 <template>
@@ -61,8 +81,9 @@ const endedHandle = async (id) => {
     </div>
     <audio
       @ended="endedHandle(playMusicStore.musicInfo.id)"
-      @pause="playMusicStore.setShowIcon(false)"
+      @pause="pauseHandle"
       @play="playMusicStore.setShowIcon(true)"
+      @error="errorHandle"
       ref="audioRef"
       autoplay
       :src="playMusicStore.musicInfo.url"

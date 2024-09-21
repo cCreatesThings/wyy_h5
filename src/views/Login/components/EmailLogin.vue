@@ -5,8 +5,8 @@ const formData = ref({
   email: '',
   password: ''
 })
-const onSubmit = () => {
-  console.log('submit')
+const onSubmit = (e) => {
+  console.log(e)
 }
 </script>
 
@@ -15,7 +15,7 @@ const onSubmit = () => {
     <van-cell-group inset>
       <van-field
         v-model="formData.email"
-        name="邮箱"
+        name="email"
         label="邮箱"
         placeholder="邮箱"
         :rules="[{ required: true, message: '请填写邮箱' }]"
@@ -24,7 +24,7 @@ const onSubmit = () => {
         <van-field
           v-model="formData.password"
           type="password"
-          name="密码"
+          name="password"
           label="密码"
           placeholder="密码"
           :rules="[{ required: true, message: '请填写密码' }]"
