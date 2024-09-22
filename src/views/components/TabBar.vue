@@ -1,11 +1,36 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import PlayMusic from '@/views/components/PlayMusic.vue'
 import { usePlayMusicStore } from '@/stores/playMusic'
 const playMusicStore = usePlayMusicStore()
+import { useRoute } from 'vue-router'
+// 获取当前路由
+const route = useRoute()
 
 // tabbar 当前选中的索引
 const active = ref(0)
+
+// 根据当前路由动态设置 Tabbar 索引
+const tabbarRoutes = ['/', '/find', '/roam', '/dynamic', '/my']
+// 监听路由变化，并设置 active 值
+watch(
+  () => route.path,
+  (newPath) => {
+    // 匹配根路径 /
+    if (newPath === '/') {
+      active.value = 0
+    } else {
+      // 查找其他以一级路由开头的路径
+      const index = tabbarRoutes.findIndex(
+        (baseRoute) => baseRoute !== '/' && newPath.startsWith(baseRoute)
+      )
+      if (index !== -1) {
+        active.value = index
+      }
+    }
+  },
+  { immediate: true } // 立即执行，以便首次加载时也能生效
+)
 </script>
 <template>
   <div class="tabbarBox">
