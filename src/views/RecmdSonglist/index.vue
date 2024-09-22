@@ -70,7 +70,7 @@ const playAllMusic = () => {
         <div class="playlist-details">
           <div class="playlist-title">
             <span class="title">{{ songList.playlist?.name }}:</span>
-            <span> {{ songList.playlist?.description }}</span>
+            <span> {{ songList.playlist?.creator?.signature }}</span>
           </div>
           <div class="creator-info">
             <van-image
@@ -79,7 +79,7 @@ const playAllMusic = () => {
               height="5vw"
               :src="songList.playlist?.creator?.avatarUrl"
             />
-            <span>{{ songList.playlist?.creator?.signature }}</span>
+            <span>{{ songList.playlist?.creator.nickname }}</span>
             <van-button size="mini" type="primary" class="follow-btn"
               >+ 关注</van-button
             >
@@ -111,10 +111,10 @@ const playAllMusic = () => {
       </div>
 
       <!-- VIP Promotion -->
-      <div class="vip-promo">
+      <!-- <div class="vip-promo">
         <span>VIP5.5折！抢独家护肤礼包</span>
         <span class="promo-link">立即抢购 &gt;</span>
-      </div>
+      </div> -->
     </div>
 
     <!-- Scrollable Playlist -->

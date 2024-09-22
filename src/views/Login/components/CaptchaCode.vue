@@ -1,7 +1,10 @@
 <script setup>
 import { getCaptchaAPI, loginByCaptchaAPI, verifyCaptchaAPI } from '@/api/login'
+import { useUserStore } from '@/stores/user'
 import { showFailToast, showToast } from 'vant'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const formData = ref({
   phone: '',
@@ -35,15 +38,16 @@ const getCaptcha = async () => {
   }, 60000 * 10)
 }
 
+const userStore = useUserStore()
 // 获取验证码
 const onSubmit = async (e) => {
   // 验证 验证码
   const { data } = await verifyCaptchaAPI(e)
-  console.log(data)
-
   if (!data) return showFailToast('验证码错误')
   const res = await loginByCaptchaAPI(e)
-  console.log(res)
+  userStore.setUserInfo(res)
+  setTimeout(() => showToast('登录成功'), 1500)
+  router.go(-1)
 }
 </script>
 

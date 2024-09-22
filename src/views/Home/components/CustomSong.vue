@@ -59,14 +59,9 @@ const playSong = async (item) => {
             <span
               class="author flex items-center absolute bottom-0 left-[16vw] text-[3vw] text-[gray]"
             >
-              <van-button
-                v-if="cur.uiElement?.subTitle?.title"
-                hairline
-                type="danger"
-                size="mini"
-                plain
-                >{{ cur.uiElement?.subTitle?.title }}</van-button
-              >
+              <span class="song-title" v-if="cur.uiElement?.subTitle?.title">
+                <span class="sq-tag">{{ cur.uiElement?.subTitle?.title }}</span>
+              </span>
               <span class="ml-[1vw]">{{
                 cur.resourceExtInfo.artists[0]?.name
               }}</span>
@@ -85,6 +80,18 @@ const playSong = async (item) => {
 </template>
 
 <style scoped lang="scss">
+.song-title {
+  display: block;
+  font-weight: 600;
+  font-size: 2.5vw;
+  padding: 0.5vw 1vw;
+}
+.sq-tag {
+  border-radius: 1vw;
+  color: #ff4500;
+  border: 1px solid #ff4500;
+  padding: 0.5vw;
+}
 .listBox {
   scroll-snap-type: x mandatory;
   .song-list {
