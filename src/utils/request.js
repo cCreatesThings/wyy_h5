@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { showFailToast, showLoadingToast } from 'vant'
+import { useUserStore } from '@/stores/user'
 
 // const baseURL = 'https://wangyi.vercel.app/'
 const baseURL = 'http://localhost:5173/api'
@@ -12,6 +13,11 @@ const request = axios.create({
 // 请求拦截器
 request.interceptors.request.use(
   (config) => {
+    const userStore = useUserStore()
+    // 请求头注入 token
+    userStore.userInfo.token &&
+      (config.headers.Authorization = userStore.userInfo.token)
+
     // 开启 loading
     showLoadingToast({ message: '加载中...' })
     return config
