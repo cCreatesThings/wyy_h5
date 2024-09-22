@@ -46,8 +46,8 @@ const onSubmit = async (e) => {
   if (!data) return showFailToast('验证码错误')
   const res = await loginByCaptchaAPI(e)
   userStore.setUserInfo(res)
-  setTimeout(() => showToast('登录成功'), 1500)
-  router.go(-1)
+  showToast('登录成功')
+  setTimeout(() => router.go(-1), 1500)
 }
 </script>
 

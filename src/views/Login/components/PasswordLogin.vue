@@ -1,6 +1,7 @@
 <script setup>
 import { loginByPasswordAPI } from '@/api/login'
 import { useUserStore } from '@/stores/user'
+import { showToast } from 'vant'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 const userStore = useUserStore()
@@ -15,7 +16,8 @@ const onSubmit = async (e) => {
 
   if (res.code === 200) {
     userStore.setUserInfo(res)
-    router.go(-1)
+    showToast('登录成功')
+    setTimeout(() => router.go(-1), 1500)
   }
 }
 </script>

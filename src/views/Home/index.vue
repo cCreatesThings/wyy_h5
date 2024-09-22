@@ -7,6 +7,7 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 import { usePlayMusicStore } from '@/stores/playMusic'
 const userStore = useUserStore()
+
 // 显示tabbar
 const playMusicStore = usePlayMusicStore()
 playMusicStore.showTabbarFun(true)

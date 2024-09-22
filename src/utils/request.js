@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { showFailToast, showLoadingToast } from 'vant'
 import { useUserStore } from '@/stores/user'
+import router from '@/router'
 
 // const baseURL = 'https://wangyi.vercel.app/'
 const baseURL = 'http://localhost:5173/api'
@@ -41,8 +42,21 @@ request.interceptors.response.use(
     return res.data
   },
   (err) => {
+    // 403处理 重置到 登录页, 提示 登录状态过期
+    if (err.response.status === 403) {
+      showFailToast({
+        message: '登录状态过期，请重新登录',
+        forbidClick: true,
+        duration: 2000
+      })
+
+      setTimeout(() => {
+        return router.push('/login')
+      }, 2000)
+    }
+
     showFailToast({
-      message: err.response.data.msg || '网络异常',
+      message: err.response?.data?.msg || '网络异常',
       forbidClick: true,
       duration: 2000
     })
