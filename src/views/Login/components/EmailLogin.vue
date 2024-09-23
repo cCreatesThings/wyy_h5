@@ -1,12 +1,22 @@
 <script setup>
+import { loginByEmailAPI } from '@/api/login'
+import { showToast } from 'vant'
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
 
 const formData = ref({
   email: '',
   password: ''
 })
-const onSubmit = (e) => {
-  console.log(e)
+const onSubmit = async (e) => {
+  const res = await loginByEmailAPI(e)
+  console.log(res)
+  userStore.setUserInfo(res)
+  showToast('登录成功')
+  setTimeout(() => router.replace(history.state.back ?? '/'), 1500)
 }
 </script>
 

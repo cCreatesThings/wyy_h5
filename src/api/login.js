@@ -48,3 +48,15 @@ export const loginByPasswordAPI = (params) => {
     params
   })
 }
+
+/**
+ * @description 邮箱登录
+ * @param {*} params {email,password}
+ * @returns
+ */
+export const loginByEmailAPI = (params) => {
+  return request({
+    url: '/login',
+    params
+  })
+}

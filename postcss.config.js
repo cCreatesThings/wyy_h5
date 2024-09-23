@@ -1,6 +1,9 @@
 export default {
   plugins: {
     tailwindcss: {},
-    autoprefixer: {}
+    autoprefixer: {},
+    'postcss-px-to-viewport': {
+      viewportWidth: 375
+    }
   }
 }

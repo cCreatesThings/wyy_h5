@@ -47,7 +47,7 @@ const onSubmit = async (e) => {
   const res = await loginByCaptchaAPI(e)
   userStore.setUserInfo(res)
   showToast('登录成功')
-  setTimeout(() => router.go(-1), 1500)
+  setTimeout(() => router.replace(history.state.back ?? '/'), 1500)
 }
 </script>
 

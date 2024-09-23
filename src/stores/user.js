@@ -26,13 +26,20 @@ export const useUserStore = defineStore(
       getUserDetail(val.account.id)
     }
 
+    // 退出登录 --> 清除 个人信息
+    const resetUser = () => {
+      userInfo.value = {}
+      userDetail.value = {}
+    }
+
     return {
       showTabbar,
       userInfo,
       userDetail,
       setShowTabbar,
       setUserInfo,
-      setUserDetail
+      setUserDetail,
+      resetUser
     }
   },
   {

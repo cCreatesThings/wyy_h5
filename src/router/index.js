@@ -43,11 +43,16 @@ const router = createRouter({
   ]
 })
 
+// 路由鉴权
+const authorityArr = ['/my', '/dynamic', '/recmdSonglist', '/roam', '/find']
 // 路由前置守卫
-router.beforeEach((to) => {
+router.beforeEach((to, from) => {
   const userStore = useUserStore()
-  // console.log(to, from)
+  if (authorityArr.includes(to.path) && !userStore.userInfo.token) {
+    return '/login'
+  }
   if (to.path === '/login') {
+    if (userStore.userInfo.token) return from.fullPath
     userStore.setShowTabbar(false)
     return true
   } else {

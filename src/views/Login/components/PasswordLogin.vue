@@ -17,7 +17,7 @@ const onSubmit = async (e) => {
   if (res.code === 200) {
     userStore.setUserInfo(res)
     showToast('登录成功')
-    setTimeout(() => router.go(-1), 1500)
+    setTimeout(() => router.replace(history.state.back ?? '/'), 1500)
   }
 }
 </script>
