@@ -21,7 +21,9 @@ request.interceptors.request.use(
     if (token) {
       config.headers.Authorization = token
     }
-    toast = showLoadingToast({ message: '加载中...' })
+    // 轮询二维码不显示加载状态
+    if (!config.url.includes('/login/qr/check'))
+      toast = showLoadingToast({ message: '加载中...' })
     return config
   },
   (err) => {
@@ -33,6 +35,10 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (res) => {
     toast.close() // 关闭 loading
+    // 剔除轮询二维码扫描状态的请求, 直接返回状态
+    if (res.config.url.includes('/login/qr/check')) {
+      return res.data
+    }
     if (res.data.code < 200 || res.data.code >= 300) {
       showFailToast({
         message: res.data.msg || '操作失败',

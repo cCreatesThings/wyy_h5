@@ -150,7 +150,7 @@ const playAllMusic = () => {
               {{ song.name }}
             </span>
           </template>
-          <template #right-icon>
+          <!-- <template #right-icon>
             <van-icon
               v-if="song.showIcon"
               name="play"
@@ -158,7 +158,7 @@ const playAllMusic = () => {
               size="6vw"
             />
             <van-icon v-else name="pause" class="right-icon" size="6vw" />
-          </template>
+          </template> -->
         </van-cell>
       </div>
     </div>

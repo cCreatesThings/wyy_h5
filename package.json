@@ -22,6 +22,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persist": "^1.0.0",
     "pinia-plugin-persistedstate": "^4.0.1",
+    "postcss-px-to-viewport": "^1.1.1",
     "sass": "^1.78.0",
     "vant": "^4.9.5",
     "vue": "^3.4.29",

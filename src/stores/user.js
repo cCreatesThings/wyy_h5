@@ -23,7 +23,7 @@ export const useUserStore = defineStore(
     }
     const setUserInfo = (val) => {
       userInfo.value = val
-      getUserDetail(val.account.id)
+      getUserDetail(val.account?.id)
     }
 
     // 退出登录 --> 清除 个人信息

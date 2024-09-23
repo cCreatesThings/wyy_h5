@@ -48,11 +48,11 @@ const authorityArr = ['/my', '/dynamic', '/recmdSonglist', '/roam', '/find']
 // 路由前置守卫
 router.beforeEach((to, from) => {
   const userStore = useUserStore()
-  if (authorityArr.includes(to.path) && !userStore.userInfo.token) {
+  if (authorityArr.includes(to.path) && !userStore.userInfo.cookie) {
     return '/login'
   }
   if (to.path === '/login') {
-    if (userStore.userInfo.token) return from.fullPath
+    if (userStore.userInfo.cookie) return from.fullPath
     userStore.setShowTabbar(false)
     return true
   } else {
