@@ -102,20 +102,20 @@ onUnmounted(() => {
 
 <template>
   <div class="music-player-page">
-    <div class="icon text-left w-[90vw] mb-[2vw]">
-      <Icon
-        icon="material-symbols:arrow-back-ios"
-        class="text-[8vw] text-[white]"
-        @click="router.back()"
-      />
-    </div>
     <div class="background-overlay"></div>
     <div class="content">
+      <div class="icon text-left w-[90vw] mb-[1vw]">
+        <Icon
+          icon="material-symbols:arrow-back-ios"
+          class="text-[6vw] text-[white]"
+          @click="router.back()"
+        />
+      </div>
       <div class="album-art">
-        <img :src="currentTrack.cover" :alt="currentTrack.title" />
+        <img :src="currentTrack.cover" :alt="currentTrack.name" />
       </div>
       <div class="track-info">
-        <h2 class="track-title">{{ currentTrack.title }}</h2>
+        <h2 class="track-title">{{ currentTrack.name }}</h2>
         <p class="track-artist">{{ currentTrack.artist }}</p>
       </div>
       <div class="controls">
@@ -145,21 +145,42 @@ onUnmounted(() => {
   padding: 5vw;
   overflow: hidden;
 }
+@property --direc {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
 
 .background-overlay {
+  --direc: 0deg;
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(45deg, #d5f147, #ff80ea);
-
+  background: linear-gradient(var(--direc), #1b91f1, #702af3 43%, #0652f6);
   filter: blur(10px);
   z-index: -1;
+  animation: spin 3s linear infinite;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    border-radius: inherit;
+    z-index: -1;
+    filter: blur(20px);
+  }
+}
+@keyframes spin {
+  to {
+    --direc: 360deg;
+  }
 }
 
 .content {
-  width: 90vw;
+  width: 95vw;
+  height: 100%;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 4vw;
   padding: 5vw;
@@ -237,7 +258,7 @@ onUnmounted(() => {
 
 ::v-deep .aplayer-lrc {
   padding-top: 1vw !important;
-  height: 38vw !important;
+  height: 29vw !important;
 
   p {
     color: #333;
@@ -261,7 +282,7 @@ onUnmounted(() => {
 
 ::v-deep .aplayer-controller {
   width: 80vw;
-  top: -168px !important;
+  top: -138px !important;
   right: 100px !important;
 }
 
@@ -284,7 +305,6 @@ onUnmounted(() => {
   .controls {
     .control-btn {
       font-size: 4vw;
-
       &.play-btn {
         font-size: 6vw;
       }
@@ -292,7 +312,6 @@ onUnmounted(() => {
   }
 
   ::v-deep .aplayer-lrc {
-    // height: 100% !important;
     .aplayer-lrc-contents {
       padding-bottom: 10px !important;
     }
@@ -300,9 +319,5 @@ onUnmounted(() => {
       font-size: 2vw;
     }
   }
-
-  // ::v-deep .aplayer-lrc-current {
-  //   font-size: 2.25vw !important;
-  // }
 }
 </style>

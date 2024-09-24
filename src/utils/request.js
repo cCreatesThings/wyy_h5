@@ -40,6 +40,8 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (res) => {
     toast?.close() // 关闭 loading
+    // 忽略掉 二维码 登录 请求
+    if (res.config.url.includes('/login/qr')) return res.data
     if (res.data.code < 200 || res.data.code >= 300) {
       showFailToast({
         message: res.data.msg || '操作失败',
