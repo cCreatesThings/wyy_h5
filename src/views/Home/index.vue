@@ -46,7 +46,7 @@ const blockCodeList = ref([])
 const getHomeData = async () => {
   const res = await getHomeDataAPI()
   homeData.value = res.data
-  blockCodeList.value = homeData.value.blocks.map((item) => item.blockCode)
+  blockCodeList.value = homeData.value?.blocks?.map((item) => item.blockCode)
 }
 getHomeData()
 const loading = ref(true)

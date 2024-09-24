@@ -2,7 +2,6 @@ import axios from 'axios'
 import { showFailToast, showLoadingToast } from 'vant'
 import { useUserStore } from '@/stores/user'
 import router from '@/router'
-// import { Toast } from 'vant'
 
 // const baseURL = 'https://wangyi.vercel.app/'
 const baseURL = 'http://localhost:5173/api'
@@ -27,6 +26,12 @@ request.interceptors.request.use(
     return config
   },
   (err) => {
+    toast?.close()
+    showFailToast({
+      message: '操作失败',
+      forbidClick: true,
+      duration: 2000
+    })
     return Promise.reject(err)
   }
 )
@@ -34,11 +39,7 @@ request.interceptors.request.use(
 // 响应拦截器
 request.interceptors.response.use(
   (res) => {
-    toast.close() // 关闭 loading
-    // 剔除轮询二维码扫描状态的请求, 直接返回状态
-    if (res.config.url.includes('/login/qr/check')) {
-      return res.data
-    }
+    toast?.close() // 关闭 loading
     if (res.data.code < 200 || res.data.code >= 300) {
       showFailToast({
         message: res.data.msg || '操作失败',

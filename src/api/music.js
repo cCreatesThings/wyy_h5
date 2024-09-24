@@ -81,3 +81,17 @@ export const getSongListDetailDynamicAPI = (id) => {
     }
   })
 }
+
+/**
+ * @description 获取歌词
+ * @param {*} id 歌曲id
+ * @returns
+ */
+export const getLyricAPI = (id) => {
+  return request({
+    url: '/lyric',
+    params: {
+      id
+    }
+  })
+}

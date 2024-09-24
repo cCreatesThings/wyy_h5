@@ -1,3 +1,4 @@
+import { usePlayMusicStore } from '@/stores/playMusic'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
@@ -35,6 +36,14 @@ const router = createRouter({
     {
       path: '/recmdSonglist',
       component: () => import('@/views/RecmdSonglist/index.vue')
+    },
+    {
+      path: '/musicPlayer',
+      component: () => import('@/views/MusicPlayer/index.vue'),
+      beforeEnter: (to, from) => {
+        if (!usePlayMusicStore().musicInfo.url) return from.fullPath
+        else return true
+      }
     },
     {
       path: '/:catchAll(.*)',

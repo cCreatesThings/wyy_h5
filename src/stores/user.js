@@ -10,7 +10,7 @@ export const useUserStore = defineStore(
     const setShowTabbar = (val) => {
       showTabbar.value = val
     }
-    // 获取用户详情 --> 在获取完token的时候调用
+    // 获取用户详情 --> 在获取完cookie的时候调用
     const getUserDetail = async (id) => {
       const res = await getUserDetailAPI(id)
       setUserDetail(res)

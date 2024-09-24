@@ -64,19 +64,22 @@ const checkLoginQRCode = async (key) => {
       } else {
         polling = false
         showToast('授权成功')
+        // eslint-disable-next-line no-case-declarations
+        const loginStatusRes = await getLoginStatusAPI()
+        console.log(loginStatusRes)
+        userStore.setUserInfo({ ...loginStatusRes.data, cookie: res.cookie })
         setTimeout(() => router.replace(history.state.back ?? '/'), 1500)
       }
       break
     case 803:
       // 授权成功，停止轮询
       showToast('授权成功')
+      polling = false
       // eslint-disable-next-line no-case-declarations
       const loginStatusRes = await getLoginStatusAPI()
       console.log(loginStatusRes)
       userStore.setUserInfo({ ...loginStatusRes.data, cookie: res.cookie })
-
       setTimeout(() => router.replace(history.state.back ?? '/'), 1000)
-      polling = false
       break
   }
 }
