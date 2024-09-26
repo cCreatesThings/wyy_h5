@@ -6,6 +6,7 @@ import { useUserStore } from '@/stores/user'
 import { usePlayMusicStore } from '@/stores/playMusic'
 import { Icon } from '@iconify/vue'
 import { useRouter } from 'vue-router'
+import { throttle } from '@/utils/throttle'
 const router = useRouter()
 
 const userStore = useUserStore()
@@ -43,35 +44,55 @@ const initAudio = () => {
   aplayerInstance = new APlayer({
     container: document.getElementById('aplayer'),
     audio: audio.value,
+    productionTip: false, // 关闭控制台的版本提示
     ...info.value
   })
 
   aplayerInstance.on('play', () => {
     isPlaying.value = true
+
+    // 播放时 播放到sotre中存储的指定时间
+    aplayerInstance.audio.currentTime = playMusicStore.currTimer
+    albumArtEl.value.style.animationPlayState = 'running'
   })
 
   aplayerInstance.on('pause', () => {
+    albumArtEl.value.style.animationPlayState = 'paused'
     isPlaying.value = false
   })
+  // 记录 当前播放时间 记录到 store
+  aplayerInstance.on(
+    'timeupdate',
+    throttle(() => {
+      if (!aplayerInstance) return
+      const currentTime = aplayerInstance?.audio?.currentTime
+      playMusicStore.setCurrTimer(currentTime)
+    })
+  )
   aplayerInstance.on('ended', () => {
     nextTrack()
+    playMusicStore.setCurrTimer(0)
   })
 }
 // 销毁实例
 const destroyAudio = () => {
   if (aplayerInstance) {
-    aplayerInstance.pause()
-    aplayerInstance.destroy()
     aplayerInstance.destroy()
   }
 }
+const albumArtEl = ref(null)
 //   播放 && 暂停
 const togglePlay = () => {
   if (aplayerInstance) {
     if (isPlaying.value) {
       aplayerInstance.pause()
+      // 暂停动画
+      albumArtEl.value.style.animationPlayState = 'paused'
+
+      // 恢复动画
     } else {
       aplayerInstance.play()
+      albumArtEl.value.style.animationPlayState = 'running'
     }
   }
 }
@@ -81,6 +102,7 @@ const nextTrack = async () => {
   if (aplayerInstance) {
     await playMusicStore.nextMusic(currentTrack.value.id)
     router.go(0)
+    playMusicStore.setCurrTimer(0)
   }
 }
 // 上一曲
@@ -88,6 +110,7 @@ const prevTrack = async () => {
   if (aplayerInstance) {
     await playMusicStore.preMusic(currentTrack.value.id)
     router.go(0)
+    playMusicStore.setCurrTimer(0)
   }
 }
 // 初始化实例
@@ -111,7 +134,7 @@ onUnmounted(() => {
           @click="router.back()"
         />
       </div>
-      <div class="album-art">
+      <div class="album-art" ref="albumArtEl">
         <img :src="currentTrack.cover" :alt="currentTrack.name" />
       </div>
       <div class="track-info">
@@ -142,7 +165,7 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 5vw;
+  padding: 2cqw;
   overflow: hidden;
 }
 @property --direc {
@@ -179,6 +202,7 @@ onUnmounted(() => {
 }
 
 .content {
+  overflow: hidden;
   width: 95vw;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.8);
@@ -193,14 +217,22 @@ onUnmounted(() => {
   max-width: 300px;
   max-height: 300px;
   margin: 0 auto 5vw;
-  border-radius: 2vw;
+  border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-
+  animation: rotate 8s linear infinite;
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -250,30 +282,42 @@ onUnmounted(() => {
   box-shadow: none;
   margin: 0;
   overflow: visible;
+  height: 200px !important;
 }
 
 ::v-deep .aplayer-body {
-  height: auto !important;
+  height: 100% !important;
 }
 
 ::v-deep .aplayer-lrc {
-  padding-top: 1vw !important;
-  height: 29vw !important;
+  padding-top: 10vw !important;
+  height: 100% !important;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.4) !important;
+  border-radius: 5px;
+  &::before,
+  &::after {
+    display: none;
+  }
+  .aplayer-lrc-contents {
+    padding-bottom: 10px !important;
+  }
 
   p {
-    color: #333;
+    color: #000000;
+    font-size: 3vw;
   }
 }
 
 ::v-deep .aplayer-lrc-current {
   color: #3498db !important;
-  font-size: 4.5vw !important;
+  font-size: 4vw !important;
   font-weight: bold;
 }
 
 ::v-deep .aplayer-info {
   padding: 0;
-  height: 34vw !important;
+  height: 100% !important;
 }
 
 ::v-deep .aplayer-music {
@@ -282,7 +326,7 @@ onUnmounted(() => {
 
 ::v-deep .aplayer-controller {
   width: 80vw;
-  top: -138px !important;
+  top: -255px !important;
   right: 100px !important;
 }
 
@@ -308,15 +352,6 @@ onUnmounted(() => {
       &.play-btn {
         font-size: 6vw;
       }
-    }
-  }
-
-  ::v-deep .aplayer-lrc {
-    .aplayer-lrc-contents {
-      padding-bottom: 10px !important;
-    }
-    p {
-      font-size: 2vw;
     }
   }
 }

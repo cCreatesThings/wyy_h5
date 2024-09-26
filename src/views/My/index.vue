@@ -1,5 +1,6 @@
 <script setup>
 import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
 const userStore = useUserStore()
 
 const quickAccessItems = [
@@ -9,6 +10,10 @@ const quickAccessItems = [
   { icon: 'mdi:shopping-outline', label: '已购' },
   { icon: 'mdi:apps', label: '更多' }
 ]
+const router = useRouter()
+const gotoUserInfo = () => {
+  router.push('/userInfo')
+}
 </script>
 <template>
   <div class="personal-center">
@@ -25,12 +30,15 @@ const quickAccessItems = [
     <!-- Profile Info -->
     <div class="profile-info">
       <van-image
+        @click="gotoUserInfo"
         round
         width="20vw"
         height="20vw"
         :src="userStore.userDetail?.profile.avatarUrl"
       />
-      <h1 class="username">{{ userStore.userDetail.profile.nickname }}</h1>
+      <h1 class="username" @click="gotoUserInfo">
+        {{ userStore.userDetail.profile.nickname }}
+      </h1>
       <div class="badges">
         <span class="badge ip-badge">
           <span class="dot"></span>

@@ -1,11 +1,10 @@
 export const throttle = (fn, delay) => {
   let timerId = null
-  return () => {
+  return function (...args) {
     if (!timerId) {
       timerId = setTimeout(() => {
-        const res = fn()
+        fn.apply(this, args) // 使用普通函数确保this指向调用的上下文
         timerId = null
-        return res
       }, delay)
     }
   }

@@ -1,19 +1,20 @@
 <script setup>
-import { ref, onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount, onMounted } from 'vue'
 import { usePlayMusicStore } from '@/stores/playMusic'
-import { showFailToast } from 'vant'
+import { showFailToast, showToast } from 'vant'
 import router from '@/router'
-
 const audioRef = ref(null)
 const playMusicStore = usePlayMusicStore()
-
 // 网页刷新, 音乐暂停
-const loadFn = () => {
-  playMusicStore.setShowIcon(false)
-  audioRef.value?.pause()
-}
-window.onload = loadFn
+// const loadFn = () => {
+//   playMusicStore.setShowIcon(false)
+//   audioRef.value?.pause()
+// }
+// window.onload = loadFn
 
+onMounted(() => {
+  audioRef.value.currentTime = playMusicStore.currTimer
+})
 const music = async (type) => {
   try {
     if (type === 'play') {
@@ -33,11 +34,37 @@ const music = async (type) => {
 // 播放结束
 const endedHandle = async () => {
   await playMusicStore.nextMusic(playMusicStore.musicInfo.id)
+  playMusicStore.setCurrTimer(0)
+}
+
+const playHandle = (e) => {
+  playMusicStore.setShowIcon(true)
+  // 播放时,设置当前播放时间 从store中获取存储的currTimer
+  const currTimer = playMusicStore.currTimer
+  e.currentTarget.currentTime = currTimer
 }
 
 const errorHandle = () => {
-  showFailToast('播放失败')
+  if (!playMusicStore.musicInfo.url) {
+    return
+  }
+  showToast('播放失败')
   playMusicStore.setShowIcon(false)
+  playMusicStore.setMusicInfo({
+    name: '听你想听',
+    cover: '',
+    artist: '',
+    url: '',
+    id: ''
+  })
+}
+
+const gotoSongLrc = () => {
+  router.push('/musicPlayer')
+}
+// 播放的时候记录当前播放时间, 存储到 store中
+const timeupdateHandle = () => {
+  playMusicStore.setCurrTimer(audioRef.value?.currentTime)
 }
 
 // 组件销毁时,取消所有事件监听
@@ -47,12 +74,8 @@ onBeforeUnmount(() => {
     playMusicStore.setShowIcon(false)
   )
   audioRef.value?.removeEventListener('error', errorHandle)
-  window.removeEventListener('load', loadFn)
+  // window.removeEventListener('load', loadFn)
 })
-
-const gotoSongLrc = () => {
-  router.push('/musicPlayer')
-}
 </script>
 
 <template>
@@ -82,9 +105,9 @@ const gotoSongLrc = () => {
       class="flex flex-col justify-center ml-[4vw]"
       v-if="playMusicStore.musicInfo.name"
     >
-      <span class="text-[3.5vw] nameName">{{
-        playMusicStore.musicInfo.name
-      }}</span>
+      <span class="text-[3.5vw] nameName">
+        {{ playMusicStore.musicInfo.name }}</span
+      >
       <span class="text-[2.5vw]">{{ playMusicStore.musicInfo.artist }}</span>
     </div>
     <div class="loading flex" v-if="playMusicStore.showLoading">
@@ -94,10 +117,11 @@ const gotoSongLrc = () => {
     <audio
       @ended="endedHandle"
       @pause="() => playMusicStore.setShowIcon(false)"
-      @play="playMusicStore.setShowIcon(true)"
+      @play="playHandle"
       @error="errorHandle"
-      ref="audioRef"
+      @timeupdate="timeupdateHandle"
       autoplay
+      ref="audioRef"
       :src="playMusicStore.musicInfo.url"
     />
     <div

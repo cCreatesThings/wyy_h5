@@ -18,9 +18,11 @@
     ]
   },
   "dependencies": {
+    "@vant/area-data": "^1.5.2",
     "aplayer": "^1.10.1",
     "axios": "^1.7.7",
     "hls.js": "^1.5.15",
+    "lodash": "^4.17.21",
     "pinia": "^2.1.7",
     "pinia-plugin-persist": "^1.0.0",
     "pinia-plugin-persistedstate": "^4.0.1",

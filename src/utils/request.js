@@ -1,14 +1,15 @@
 import axios from 'axios'
-import { showFailToast, showLoadingToast } from 'vant'
+import { showFailToast, showLoadingToast, showNotify } from 'vant'
 import { useUserStore } from '@/stores/user'
 import router from '@/router'
+import 'vant/lib/notify/style'
 
-// const baseURL = 'https://wangyi.vercel.app/'
+// const baseURL = 'https://wangyi.vercel.app'
 const baseURL = 'http://localhost:5173/api'
 
 const request = axios.create({
   baseURL,
-  timeout: 10000
+  timeout: 20000
 })
 
 // 请求拦截器
@@ -43,17 +44,21 @@ request.interceptors.response.use(
     // 忽略掉 二维码 登录 请求
     if (res.config.url.includes('/login/qr')) return res.data
     if (res.data.code < 200 || res.data.code >= 300) {
-      showFailToast({
-        message: res.data.msg || '操作失败',
-        forbidClick: true,
-        duration: 2000
+      showNotify({
+        type: 'danger',
+        color: '#fff',
+        background: 'red',
+        message: res.data.message || '操作失败'
       })
-      return Promise.reject(new Error(res.data.msg))
+
+      return Promise.reject(new Error(res.data.message))
     }
     return res.data
   },
   (err) => {
     toast.close() // 关闭 loading
+    console.log(err)
+
     if (err.code === 'ECONNABORTED') {
       showFailToast({
         message: '请求超时，请稍后再试',
@@ -73,17 +78,24 @@ request.interceptors.response.use(
           router.push('/login')
         }, 2000)
       } else {
-        showFailToast({
-          message: err.response.data?.message || '请求失败',
-          forbidClick: true,
-          duration: 2000
+        showNotify({
+          type: 'danger',
+          color: '#fff',
+          background: 'red',
+          message: err.response.data.message
         })
       }
     } else {
-      showFailToast({
-        message: '网络异常，请稍后再试',
-        forbidClick: true,
-        duration: 2000
+      // showFailToast({
+      //   message: '网络异常，请稍后再试',
+      //   forbidClick: true,
+      //   duration: 2000
+      // })
+      showNotify({
+        type: 'danger',
+        color: '#fff',
+        background: 'red',
+        message: err.response.data.message
       })
     }
     return Promise.reject(err)

@@ -23,9 +23,8 @@ const getCaptcha = async () => {
 
   isWaiting = true // 开始计时，设置为正在等待
   try {
-    const res = await getCaptchaAPI(formData.value.phone) // 假设这是你的 API 请求
+    await getCaptchaAPI(formData.value.phone) // 假设这是你的 API 请求
     showToast({ message: '验证码发送成功' })
-    console.log(res)
   } catch (error) {
     console.error('验证码请求失败', error)
     isWaiting = false // 请求失败，解除等待状态

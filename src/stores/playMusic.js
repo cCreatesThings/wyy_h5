@@ -6,6 +6,12 @@ import { showToast } from 'vant'
 export const usePlayMusicStore = defineStore(
   'palyMusic',
   () => {
+    // 当前播放进度
+    const currTimer = ref(0)
+    // 设置当前播放进度
+    const setCurrTimer = (val) => {
+      currTimer.value = val
+    }
     // 控制底部音乐播放组件的显示与隐藏
     const showMusic = ref(true)
     const showLoading = ref(false)
@@ -35,6 +41,9 @@ export const usePlayMusicStore = defineStore(
     // 当前播放的歌曲的id 索引
     const curMusicId = ref(0)
     const setMusicInfo = async (id, IdList) => {
+      if (id instanceof Object) {
+        return (musicInfo.value = id)
+      }
       IdList instanceof Array && (rescouceIdList.value = IdList)
 
       // 调用获取音乐详情的接口
@@ -113,6 +122,8 @@ export const usePlayMusicStore = defineStore(
       searchHistory,
       rescouceIdList,
       showTabbar,
+      currTimer,
+      setCurrTimer,
       showMusicFun,
       setMusicInfo,
       setShowIcon,

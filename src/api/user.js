@@ -15,3 +15,20 @@ export const getUserDetailAPI = (uid) => {
     params: { uid }
   })
 }
+
+// 接口地址 : /user/update
+
+// 调用例子 : /user/update?gender=0&signature=测试签名&city=440300&nickname=binary&birthday=1525918298004&province=440000
+
+/**
+ * @description 修改用户信息
+ * @param {*} data
+ * @returns
+ */
+export const updateUserInfoAPI = (data) => {
+  return request({
+    url: '/user/update',
+    method: 'POST',
+    data
+  })
+}
