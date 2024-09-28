@@ -8,9 +8,10 @@ import { request } from '@/utils/request'
 
 export const getMusicUrlAPI = (id) => {
   return request({
-    url: '/song/url',
+    url: '/song/url/v1',
     params: {
-      id
+      id,
+      level: 'lossless'
     }
   })
 }

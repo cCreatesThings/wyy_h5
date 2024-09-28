@@ -47,6 +47,10 @@ const router = createRouter({
       }
     },
     {
+      path: '/lrcDetail',
+      component: () => import('@/views/MusicPlayer/components/LrcDetail.vue')
+    },
+    {
       path: '/userInfo',
       component: () => import('@/views/My/components/UserInfo.vue')
     },

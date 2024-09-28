@@ -35,7 +35,8 @@ export const usePlayMusicStore = defineStore(
       cover: '',
       artist: '',
       url: '',
-      id: ''
+      id: '',
+      lrc: ''
     })
     const rescouceIdList = ref([])
     // 当前播放的歌曲的id 索引
