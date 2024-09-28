@@ -59,6 +59,9 @@ const initAudio = () => {
   aplayerInstance.on('pause', () => {
     albumArtEl.value.style.animationPlayState = 'paused'
     isPlaying.value = false
+    aplayerInstance.on('click', () => {
+      console.log(11)
+    })
   })
   // 记录 当前播放时间 记录到 store
   aplayerInstance.on(
@@ -116,6 +119,9 @@ const prevTrack = async () => {
 // 初始化实例
 onMounted(() => {
   initAudio()
+  document.querySelector('.aplayer-body').addEventListener('click', () => {
+    router.push('/lrcDetail')
+  })
 })
 
 onUnmounted(() => {
@@ -164,7 +170,9 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   align-items: center;
+
   padding: 2cqw;
   overflow: hidden;
 }
@@ -183,11 +191,13 @@ onUnmounted(() => {
   bottom: 0;
   background: linear-gradient(var(--direc), #1b91f1, #702af3 43%, #0652f6);
   filter: blur(10px);
+
   z-index: -1;
   animation: spin 3s linear infinite;
   &::before {
     content: '';
     position: absolute;
+
     inset: 0;
     background: inherit;
     border-radius: inherit;
@@ -208,6 +218,7 @@ onUnmounted(() => {
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 4vw;
   padding: 5vw;
+
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -216,11 +227,15 @@ onUnmounted(() => {
   height: 80vw;
   max-width: 300px;
   max-height: 300px;
+
   margin: 0 auto 5vw;
   border-radius: 50%;
+
   overflow: hidden;
+
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   animation: rotate 8s linear infinite;
+
   img {
     width: 100%;
     height: 100%;
@@ -243,11 +258,13 @@ onUnmounted(() => {
   .track-title {
     font-size: 6vw;
     font-weight: bold;
+
     margin-bottom: 2vw;
   }
 
   .track-artist {
     font-size: 4vw;
+
     color: #666;
   }
 }
@@ -261,7 +278,9 @@ onUnmounted(() => {
   .control-btn {
     background: none;
     border: none;
+
     font-size: 8vw;
+
     color: #333;
     cursor: pointer;
     transition: color 0.3s ease;
@@ -277,62 +296,10 @@ onUnmounted(() => {
   }
 }
 
-::v-deep .aplayer {
-  background: transparent;
-  box-shadow: none;
-  margin: 0;
-  overflow: visible;
-  height: 200px !important;
-}
-
-::v-deep .aplayer-body {
-  height: 100% !important;
-}
-
-::v-deep .aplayer-lrc {
-  padding-top: 10vw !important;
-  height: 100% !important;
-  backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.4) !important;
-  border-radius: 5px;
-  &::before,
-  &::after {
-    display: none;
-  }
-  .aplayer-lrc-contents {
-    padding-bottom: 10px !important;
-  }
-
-  p {
-    color: #000000;
-    font-size: 3vw;
-  }
-}
-
-::v-deep .aplayer-lrc-current {
-  color: #3498db !important;
-  font-size: 4vw !important;
-  font-weight: bold;
-}
-
-::v-deep .aplayer-info {
-  padding: 0;
-  height: 100% !important;
-}
-
-::v-deep .aplayer-music {
-  display: none;
-}
-
-::v-deep .aplayer-controller {
-  width: 80vw;
-  top: -255px !important;
-  right: 100px !important;
-}
-
 @media (min-width: 768px) {
   .album-art {
     width: 40vw;
+
     height: 40vw;
   }
 
