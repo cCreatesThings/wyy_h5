@@ -109,19 +109,22 @@ const searchHistoryFn = (index) => {
         <span>搜索历史</span>
         <van-icon name="delete" @click="toggleDeleteMode" />
       </div>
-      <div
-        v-for="(item, index) in palyMusicStore.searchHistory"
-        :key="index"
-        class="history-item text-[3vw]"
-        @click="searchHistoryFn(index)"
-      >
-        {{ item }}
-        <span
-          v-if="deleteMode"
-          class="delete-btn"
-          @click.stop="deleteHistoryItem(item)"
-          >×</span
+      <div class="list flex flex-wrap">
+        <div
+          style="width: fit-content"
+          v-for="(item, index) in palyMusicStore.searchHistory"
+          :key="index"
+          class="history-item text-[3vw] bg-[#f7f8fa] rounded-[10px] mb-[1vw] mr-[1vw]"
+          @click="searchHistoryFn(index)"
         >
+          {{ item }}
+          <span
+            v-if="deleteMode"
+            class="delete-btn"
+            @click.stop="deleteHistoryItem(item)"
+            >×</span
+          >
+        </div>
       </div>
     </div>
 
