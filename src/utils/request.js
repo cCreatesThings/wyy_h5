@@ -2,8 +2,7 @@ import axios from 'axios'
 import { showFailToast, showLoadingToast, showNotify } from 'vant'
 import { useUserStore } from '@/stores/user'
 import router from '@/router'
-import 'vant/lib/notify/style'
-
+import 'vant/lib/loading/style'
 // const baseURL = 'https://wangyi.vercel.app'
 const baseURL = 'http://localhost:5173/api'
 

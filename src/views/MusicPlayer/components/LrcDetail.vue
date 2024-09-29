@@ -39,7 +39,7 @@ watch(
 // 解析歌词内容，转换为带时间戳和文本的数组
 const parsedLyrics = computed(() => {
   return lyrics.value
-    ?.split('\n') // 按行分割歌词
+    .split('\n') // 按行分割歌词
     .map((line) => {
       // 使用正则解析时间戳和歌词文本
       const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2})\](.*)/)
@@ -120,8 +120,6 @@ function scrollToCurrentLyric() {
 // 点击进度条调整播放进度
 function seek(event) {
   const rect = event.target.getBoundingClientRect() // 获取进度条位置
-  console.log(event.clientX)
-  console.log(rect)
   const x = event.clientX - rect.left // 获取点击位置
   const clickedValue = (x / rect.width) * duration.value // 计算点击对应的时间
   if (audioPlayer.value) {
@@ -139,7 +137,9 @@ function startSeek() {
 function updateSeek(event) {
   if (seekingTouch) {
     const rect = event.target.getBoundingClientRect()
+    // 计算触摸点相对于进度条左侧的距离。
     const x = event.touches[0].clientX - rect.left
+    //根据触摸点计算新的播放时间（触摸点在进度条中的位置比例乘以音频总时长）。
     const newTime = (x / rect.width) * duration.value
     if (audioPlayer.value) {
       audioPlayer.value.currentTime = Math.max(
