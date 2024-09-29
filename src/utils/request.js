@@ -2,7 +2,6 @@ import axios from 'axios'
 import { showFailToast, showLoadingToast, showNotify } from 'vant'
 import { useUserStore } from '@/stores/user'
 import router from '@/router'
-import 'vant/lib/loading/style'
 // const baseURL = 'https://wangyi.vercel.app'
 const baseURL = 'http://localhost:5173/api'
 
@@ -94,7 +93,7 @@ request.interceptors.response.use(
         type: 'danger',
         color: '#fff',
         background: 'red',
-        message: err.response.data.message
+        message: err.response?.data.message
       })
     }
     return Promise.reject(err)

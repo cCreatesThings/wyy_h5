@@ -1,5 +1,6 @@
 // 接口地址 : /user/detail
 
+import { useUserStore } from '@/stores/user'
 import { request } from '@/utils/request'
 
 // 调用例子 : /user/detail?uid=32953014
@@ -26,6 +27,11 @@ export const getUserDetailAPI = (uid) => {
  * @returns
  */
 export const updateUserInfoAPI = (data) => {
+  const userStore = useUserStore()
+  const { nickname, gender, birthday, city, province, signature } =
+    userStore.userDetail.profile
+
+  data = { nickname, gender, birthday, city, province, signature, ...data }
   return request({
     url: '/user/update',
     method: 'POST',

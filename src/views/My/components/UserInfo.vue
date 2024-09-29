@@ -3,7 +3,8 @@ import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
 import { showToast } from 'vant'
 import { useCascaderAreaData } from '@vant/area-data'
-import nicknameDialog from './nicknameDialog.vue'
+import nicknameDialog from './nicknamePopup.vue'
+import UpdateGender from './UpdateGender.vue'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 const userStore = useUserStore()
@@ -24,7 +25,6 @@ const userInfo = ref({
   musicLevel: 'Lv.1'
 })
 
-const showGenderPicker = ref(false)
 const showRegionPicker = ref(false)
 const showDatePicker = ref(false)
 const showUniversityPicker = ref(false)
@@ -33,7 +33,6 @@ const showMusicTagPicker = ref(false)
 // 地区
 const regionOptions = useCascaderAreaData()
 
-const genderOptions = ['男', '女', '其他']
 const cascaderValue = ref('')
 
 const universityOptions = ['武汉大学', '华中科技大学', '其他大学']
@@ -47,9 +46,9 @@ const onChangeAvatar = () => {
   showToast('更换头像')
 }
 
-const nicknameDialogEl = ref(null)
-const showNicknameDialog = () => {
-  nicknameDialogEl.value.showTrue()
+const nicknamePopupEl = ref(null)
+const showNicknamePopup = () => {
+  nicknamePopupEl.value.showPopup()
 }
 const onShowQRCode = () => {
   showToast('显示二维码')
@@ -57,11 +56,6 @@ const onShowQRCode = () => {
 
 const onShowMusicLevel = () => {
   showToast('显示音乐等级详情')
-}
-
-const onConfirmGender = ({ selectedOptions }) => {
-  userInfo.value.gender = selectedOptions[0]
-  showGenderPicker.value = false
 }
 
 const onFinishRegion = ({ selectedOptions }) => {
@@ -84,6 +78,11 @@ const onConfirmUniversity = ({ selectedOptions }) => {
 const onConfirmMusicTag = ({ selectedOptions }) => {
   userInfo.value.musicTag = selectedOptions[0]
   showMusicTagPicker.value = false
+}
+
+const updateGenderEl = ref(null)
+const clickGender = () => {
+  updateGenderEl.value.showGenderPopup()
 }
 </script>
 <template>
@@ -108,16 +107,21 @@ const onConfirmMusicTag = ({ selectedOptions }) => {
         :placeholder="userStore.userDetail.profile.nickname"
         readonly
         is-link
-        @click="showNicknameDialog"
+        @click="showNicknamePopup"
         label="昵称"
       />
       <van-field
-        v-model="userInfo.gender"
+        @click="clickGender"
         is-link
         readonly
         label="性别"
-        placeholder="请选择性别"
-        @click="showGenderPicker = true"
+        :placeholder="
+          userStore.userDetail.profile.gender === 1
+            ? '男'
+            : userStore.userDetail.profile.gender === 2
+              ? '女'
+              : '保密'
+        "
       />
       <van-field
         v-model="userInfo.region"
@@ -183,15 +187,6 @@ const onConfirmMusicTag = ({ selectedOptions }) => {
       />
     </van-cell-group>
 
-    <!-- Gender Picker -->
-    <van-popup v-model:show="showGenderPicker" position="bottom">
-      <van-picker
-        :columns="genderOptions"
-        @confirm="onConfirmGender"
-        @cancel="showGenderPicker = false"
-      />
-    </van-popup>
-
     <!-- Region Picker -->
     <van-popup v-model:show="showRegionPicker" position="bottom">
       <van-cascader
@@ -229,7 +224,8 @@ const onConfirmMusicTag = ({ selectedOptions }) => {
         @cancel="showMusicTagPicker = false"
       />
     </van-popup>
-    <nicknameDialog ref="nicknameDialogEl" />
+    <nicknameDialog ref="nicknamePopupEl" />
+    <UpdateGender ref="updateGenderEl" />
   </div>
 </template>
 
