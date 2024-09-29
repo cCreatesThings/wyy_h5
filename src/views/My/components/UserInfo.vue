@@ -1,12 +1,17 @@
 <script setup>
 import { ref } from 'vue'
 import { Icon } from '@iconify/vue'
-import { showToast } from 'vant'
+import { showNotify, showToast } from 'vant'
 import { useCascaderAreaData } from '@vant/area-data'
 import nicknameDialog from './nicknamePopup.vue'
 import UpdateGender from './UpdateGender.vue'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
+import cascaderOptions, { DivisionUtil } from '@pansy/china-division'
+import { updateUserInfoAPI } from '@/api/user'
+// import { checkRequestInterval } from '@/utils/throttle'
+
+const divisionUtil = new DivisionUtil(cascaderOptions)
 const userStore = useUserStore()
 const router = useRouter()
 userStore.setShowTabbar(false)
@@ -15,7 +20,7 @@ const userInfo = ref({
   avatar: 'https://fastly.jsdelivr.net/npm/@vant/assets/cat.jpeg',
   nickname: 'codewhisperer',
   gender: '',
-  region: '',
+  region: userStore.regionStr,
   birthday: '',
   accountAge: '2天(2024年09月创建)',
   ipLocation: '湖北',
@@ -24,6 +29,10 @@ const userInfo = ref({
   introduction: '',
   musicLevel: 'Lv.1'
 })
+console.log(
+  userStore.userDetail.profile.province,
+  userStore.userDetail.profile.city
+)
 
 const showRegionPicker = ref(false)
 const showDatePicker = ref(false)
@@ -58,10 +67,18 @@ const onShowMusicLevel = () => {
   showToast('显示音乐等级详情')
 }
 
-const onFinishRegion = ({ selectedOptions }) => {
-  userInfo.value.region = selectedOptions.map((option) => option.text).join(' ')
-  console.log(userInfo.value.region)
-
+const onFinishRegion = async ({ selectedOptions }) => {
+  // if (!checkRequestInterval()) return
+  const [province, city] = selectedOptions.map((option) => option.value)
+  console.log(province, city)
+  userInfo.value.region = `${divisionUtil.getNameByCode(province)} ${divisionUtil.getNameByCode(city)}`
+  await updateUserInfoAPI({ province, city })
+  userStore.setRegionStr(
+    `${divisionUtil.getNameByCode(province)} ${divisionUtil.getNameByCode(city)}`
+  )
+  // 拉取新数据
+  await userStore.getUserDetail(userStore.userDetail.profile.userId)
+  showNotify({ message: '更新成功', type: 'success', background: 'green' })
   showRegionPicker.value = false
 }
 

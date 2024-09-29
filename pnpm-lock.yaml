@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@pansy/china-division':
+        specifier: ^2.1.0
+        version: 2.1.0
       '@vant/area-data':
         specifier: ^1.5.2
         version: 1.5.2
@@ -403,6 +406,10 @@ packages:
   '@nuxt/schema@3.13.1':
     resolution: {integrity: sha512-ishbhzVGspjshG9AG0hYnKYY6LWXzCtua7OXV7C/DQ2yA7rRcy1xHpzKZUDbIRyxCHHCAcBd8jfHEUmEuhEPrA==}
     engines: {node: ^14.18.0 || >=16.10.0}
+
+  '@pansy/china-division@2.1.0':
+    resolution: {integrity: sha512-m0ov6dp6R+pXvcdwZkbzLsj8bnyRGpbyfOnFNbZYA5KkJrD+iy5qnjIIenvkpLEjc6DSp42jjBK4XmZeSPhiUg==}
+    engines: {node: '>=8.9.0'}
 
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
@@ -2250,6 +2257,8 @@ snapshots:
       - rollup
       - supports-color
       - webpack-sources
+
+  '@pansy/china-division@2.1.0': {}
 
   '@pkgjs/parseargs@0.11.0':
     optional: true

@@ -13,12 +13,15 @@ export const useUserStore = defineStore(
     // 获取用户详情 --> 在获取完cookie的时候调用
     const getUserDetail = async (id) => {
       const res = await getUserDetailAPI(id)
-      console.log(res)
-      setUserDetail(res)
+      setUserDetail(res) // 设置 userDetail
     }
     // 个人信息
     const userInfo = ref({})
     const userDetail = ref({})
+    const regionStr = ref('')
+    const setRegionStr = (val) => {
+      regionStr.value = val
+    }
     const setUserDetail = (val) => {
       userDetail.value = val
     }
@@ -37,11 +40,13 @@ export const useUserStore = defineStore(
       showTabbar,
       userInfo,
       userDetail,
+      regionStr,
       setShowTabbar,
       setUserInfo,
       setUserDetail,
       resetUser,
-      getUserDetail
+      getUserDetail,
+      setRegionStr
     }
   },
   {

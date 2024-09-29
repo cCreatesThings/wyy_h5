@@ -3,6 +3,7 @@ import { showNotify } from 'vant'
 import { ref } from 'vue'
 import { updateUserInfoAPI } from '@/api/user'
 import { useUserStore } from '@/stores/user'
+import { checkRequestInterval } from '@/utils/throttle'
 const userStore = useUserStore()
 const genderType = { 0: '保密', 1: '男性', 2: '女性' }
 const show = ref(false)
@@ -11,22 +12,6 @@ const showGenderPopup = () => {
 }
 const gender = ref(userStore.userDetail.profile.gender)
 
-// 节流函数  防止短时间内多次修改
-const lastRequestTime = ref(0)
-const requestInterval = 3 * 60 * 1000 // 3分钟
-const checkRequestInterval = () => {
-  const currentTime = Date.now()
-  if (currentTime - lastRequestTime.value < requestInterval) {
-    showNotify({
-      message: '请不要频繁修改',
-      background: '#ff976a',
-      type: 'warning'
-    })
-    return false
-  }
-  lastRequestTime.value = currentTime
-  return true
-}
 // 修改昵称
 const confirm = async () => {
   show.value = false
