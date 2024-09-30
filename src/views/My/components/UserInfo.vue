@@ -7,11 +7,10 @@ import nicknameDialog from './nicknamePopup.vue'
 import UpdateGender from './UpdateGender.vue'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
-import cascaderOptions, { DivisionUtil } from '@pansy/china-division'
 import { updateUserInfoAPI } from '@/api/user'
-// import { checkRequestInterval } from '@/utils/throttle'
+import { useGetareadatastr } from '@/hooks/useGetareadatastr'
+import { checkRequestInterval } from '@/utils/throttle'
 
-const divisionUtil = new DivisionUtil(cascaderOptions)
 const userStore = useUserStore()
 const router = useRouter()
 userStore.setShowTabbar(false)
@@ -29,10 +28,6 @@ const userInfo = ref({
   introduction: '',
   musicLevel: 'Lv.1'
 })
-console.log(
-  userStore.userDetail.profile.province,
-  userStore.userDetail.profile.city
-)
 
 const showRegionPicker = ref(false)
 const showDatePicker = ref(false)
@@ -68,16 +63,14 @@ const onShowMusicLevel = () => {
 }
 
 const onFinishRegion = async ({ selectedOptions }) => {
-  // if (!checkRequestInterval()) return
+  if (!checkRequestInterval()) return
   const [province, city] = selectedOptions.map((option) => option.value)
-  console.log(province, city)
-  userInfo.value.region = `${divisionUtil.getNameByCode(province)} ${divisionUtil.getNameByCode(city)}`
   await updateUserInfoAPI({ province, city })
-  userStore.setRegionStr(
-    `${divisionUtil.getNameByCode(province)} ${divisionUtil.getNameByCode(city)}`
-  )
+  const regionStr = useGetareadatastr(province, city)
   // 拉取新数据
   await userStore.getUserDetail(userStore.userDetail.profile.userId)
+  userInfo.value.region = regionStr.join(' ')
+  userStore.setRegionStr(regionStr.join(' '))
   showNotify({ message: '更新成功', type: 'success', background: 'green' })
   showRegionPicker.value = false
 }

@@ -1,6 +1,7 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { getUserDetailAPI } from '@/api/user'
+import { useGetareadatastr } from '@/hooks/useGetareadatastr'
 
 export const useUserStore = defineStore(
   'user',
@@ -14,6 +15,10 @@ export const useUserStore = defineStore(
     const getUserDetail = async (id) => {
       const res = await getUserDetailAPI(id)
       setUserDetail(res) // 设置 userDetail
+      regionStr.value = useGetareadatastr(
+        res.profile.province,
+        res.profile.city
+      ).join(' ')
     }
     // 个人信息
     const userInfo = ref({})
