@@ -43,7 +43,7 @@ const parsedLyrics = computed(() => {
     .split('\n') // 按行分割歌词
     .map((line) => {
       // 使用正则解析时间戳和歌词文本
-      const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2})\](.*)/)
+      const match = line.match(/\[(\d{2}):(\d{2})\.(\d{1,3})\](.*)/)
       if (match) {
         const [, minutes, seconds, centiseconds, text] = match
         return {
