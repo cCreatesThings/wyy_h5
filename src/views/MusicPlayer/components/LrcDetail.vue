@@ -38,11 +38,12 @@ watch(
 
 // 解析歌词内容，转换为带时间戳和文本的数组
 const parsedLyrics = computed(() => {
+  if (!lyrics.value) return []
   return lyrics.value
     .split('\n') // 按行分割歌词
     .map((line) => {
       // 使用正则解析时间戳和歌词文本
-      const match = line.match(/\[(\d{2}):(\d{2})\.(\d{2})\](.*)/)
+      const match = line.match(/\[(\d{2}):(\d{2})\.(\d{1,3})\](.*)/)
       if (match) {
         const [, minutes, seconds, centiseconds, text] = match
         return {
@@ -256,7 +257,11 @@ watch(isPlaying, (newValue) => {
     </div>
 
     <!-- 歌词显示区域，使用 v-for 渲染每一行歌词 -->
-    <div class="lyrics-container" ref="lyricsContainer">
+    <div
+      class="lyrics-container"
+      ref="lyricsContainer"
+      v-if="parsedLyrics.length > 0"
+    >
       <p
         v-for="(line, index) in parsedLyrics"
         :key="index"
@@ -270,6 +275,9 @@ watch(isPlaying, (newValue) => {
         {{ line.text }}
         <!-- 歌词文本 -->
       </p>
+    </div>
+    <div v-else class="text-center mt-[50%]">
+      <p>暂无歌词</p>
     </div>
 
     <!-- 播放器控制区域，包括进度条、时间信息、控制按钮等 -->

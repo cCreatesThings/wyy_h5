@@ -95,6 +95,7 @@ const gotoSearch = () => {
         <div
           v-if="userStore?.userDetail?.profile?.avatarUrl"
           class="userinfo flex items-center ml-[auto]"
+          @click="$router.push('/my')"
         >
           <van-image
             round
@@ -102,7 +103,7 @@ const gotoSearch = () => {
             height="8vw"
             :src="userStore?.userDetail?.profile.avatarUrl"
           />
-          <span class="nickname pl-[2vw] text-[4vw] text-[red]">{{
+          <span class="nickname pl-[2vw] text-[4vw] text-[#5dc8e6]">{{
             userStore.userDetail.profile.nickname
           }}</span>
         </div>
